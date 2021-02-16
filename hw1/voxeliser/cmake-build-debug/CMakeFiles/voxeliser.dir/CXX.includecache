@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/Point.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Point.h
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/Rows.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Rows.h
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/VoxelGrid.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/VoxelGrid.h
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/main.cpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/main.cpp
 iostream
 -
 fstream
@@ -21,10 +21,12 @@ vector
 -
 sstream
 -
+filesystem
+-
 Point.h
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/Point.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Point.h
 Rows.h
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/Rows.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Rows.h
 VoxelGrid.h
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/VoxelGrid.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/VoxelGrid.h
 

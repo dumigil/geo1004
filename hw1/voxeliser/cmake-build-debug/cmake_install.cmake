@@ -1,4 +1,4 @@
-# Install script for directory: /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser
+# Install script for directory: /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw1/voxeliser/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
