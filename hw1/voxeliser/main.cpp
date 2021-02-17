@@ -4,6 +4,7 @@
 #include <sstream>
 #include <filesystem>
 #include <string>
+#include <algorithm>
 namespace fs = std::filesystem;
 
 #include "Point.h"
@@ -62,6 +63,10 @@ bool read_obj(std::string filepath){
 
 
 }
+static bool abs_compare(float a, float b)
+{
+    return (std::abs(a) < std::abs(b));
+}
 
 
 int main(int argc, const char * argv[]) {
@@ -69,6 +74,7 @@ int main(int argc, const char * argv[]) {
   char *path = "../";
   const char *file_out = "vox.obj";
   float voxel_size = 1.0;
+
 
   // Read file
   std::ifstream input_file;
@@ -81,9 +87,42 @@ int main(int argc, const char * argv[]) {
   std::cout<<vertices.size()<<" vertices read from .obj"<<std::endl;
   std::cout<<faces.size()<<" faces read from .obj"<<std::endl;
 
-    // Create grid
+  //Compute bbox
+  Point min_x = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+      return a.x < b.x;
+  });
+  Point min_y = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+        return a.y < b.y;
+  });
+  Point min_z = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+        return a.z < b.z;
+  });
+  Point max_x = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+        return a.x > b.x;
+  });
+  Point max_y = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+        return a.y > b.y;
+  });
+  Point max_z = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
+        return a.z > b.z;
+  });
+  float minX = min_x.x;;
+  float minY = min_y.y;
+  float minZ = min_z.z;;
+  float maxX = max_x.x;;
+  float maxY = max_y.y;
+  float maxZ = max_z.z;;
+  std::cout<<"["<<minX<<", "<<minY<<", "<<minZ<<"]"<<std::endl;
+  std::cout<<"["<<maxX<<", "<<maxY<<", "<<maxZ<<"]"<<std::endl;
+  // Create grid
   Rows rows;
-  // to do
+  float xrows = (ceil(maxX) - floor(minX))/voxel_size;
+  float yrows = (ceil(maxY) - floor(minY))/voxel_size;
+  float zrows = (ceil(maxZ)- floor(minZ))/voxel_size;
+  std::cout<<xrows<<" "<<yrows<<" "<<zrows<<std::endl;
+
+
+    // to do
   VoxelGrid voxels(rows.x, rows.y, rows.z);
   
   // Voxelise
