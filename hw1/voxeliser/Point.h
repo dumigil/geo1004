@@ -15,7 +15,7 @@ struct Point {
     this->y = y;
     this->z = z;
   }
-  
+
   float &operator[](const int &coordinate) {
     if (coordinate == 0) return x;
     else if (coordinate == 1) return y;
@@ -44,6 +44,12 @@ struct Point {
   
   const Point operator/(const float &other) const {
     return Point(x/other, y/other, z/other);
+  }
+  bool operator<(const Point &other) const{
+      return x < other.x || y < other.y || z < other.z;
+  }
+  bool operator>(const Point &other) const{
+      return x > other.x || y > other.y || z > other.z;
   }
   
   float dot(const Point &other) const {
