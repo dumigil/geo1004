@@ -42,7 +42,7 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "vox.obj";
-  float voxel_size = 1.0;
+  float voxel_size = 10.0;
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
 
@@ -121,9 +121,9 @@ int main(int argc, const char * argv[]) {
   float maxZ = max_z.z;;
   std::cout<<maxX<<" "<<minX<<","<<maxY<<" "<<minY<<","<<maxZ<<" "<<minZ<<std::endl;
   // Create grid
-  float xrows = (ceil(maxX) - floor(minX))/voxel_size;
-  float yrows = (ceil(maxY) - floor(minY))/voxel_size;
-  float zrows = (ceil(maxZ)- floor(minZ))/voxel_size;
+  float xrows = floor((ceil(maxX) - floor(minX))/voxel_size);
+  float yrows = floor((ceil(maxY) - floor(minY))/voxel_size);
+  float zrows = floor((ceil(maxZ)- floor(minZ))/voxel_size);
   std::cout<<std::setprecision(6)<<xrows<<" "<<yrows<<" "<<zrows<<std::endl;
   Rows rows(xrows, yrows, zrows);
   std::cout<<rows<<std::endl;
@@ -140,9 +140,9 @@ int main(int argc, const char * argv[]) {
     Point p2 = Point(vertices[triangle[1]]);
     Point p3 = Point(vertices[triangle[2]]);
     //std::cout<<p1<<" "<<p2<<" "<<p3<<std::endl;
-      for (int i=0; i<= voxels.max_x; i++){
-          for (int j=0; j<=voxels.max_y; j++){
-              for(int h=0; h<=voxels.max_z; h++){
+      for (int i=0; i< voxels.max_x; i++){
+          for (int j=0; j<voxels.max_y; j++){
+              for(int h=0; h<voxels.max_z; h++){
                   float x_coord = float(i) + minX;
                   float y_coord = float(j) + minY;
                   float z_coord = float(h) + minZ;
@@ -155,13 +155,13 @@ int main(int argc, const char * argv[]) {
                   Point z_max_face = Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size,z_coord);
                   Point z_min_face = Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size,z_coord-voxel_size);
 
-                  //std::cout<<x_min_face<<voxel_center<<x_max_face<<std::endl;
-                  //std::cout<<y_min_face<<voxel_center<<y_max_face<<std::endl;
-                  //std::cout<<z_min_face<<voxel_center<<z_max_face<<std::endl;
-                  //std::cout<<std::setprecision(10)<<signed_volume(p1,p2,p3,x_max_face)<<" versus "<<signed_volume(p1,p2,p3,x_min_face)<<std::endl;
-                  //std::cout<<intersects(x_min_face,x_max_face,p1,p2,p3)<<std::endl;
-                  if(intersects(x_min_face,x_max_face,p1,p2,p3) || intersects(y_min_face,y_max_face,p1,p2,p3) || intersects(z_min_face,z_max_face,p1,p2,p3)){
-                      std::cout<<"Intersection"<<std::endl;
+
+                  if(intersects(x_min_face,x_max_face,p1,p2,p3) && intersects(y_min_face,y_max_face,p1,p2,p3) && intersects(z_min_face,z_max_face,p1,p2,p3)){
+                      //std::cout<<"Intersection"<<std::endl;
+                      voxels(i,j,h) = 1;
+                  }
+                  else{
+                      continue;
                   }
               }
           }
