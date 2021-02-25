@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "../triangle.obj";
-  float voxel_size =5.0;
+  float voxel_size =2.0;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
@@ -178,7 +178,17 @@ int main(int argc, const char * argv[]) {
   
   // Fill model
   // to do
-  
+  /*
+  for (int i=0; i< voxels.max_x; i++) {
+      for (int j = 0; j < voxels.max_y; j++) {
+          for (int h = 0; h < voxels.max_z; h++) {
+              if(voxels(i,j,h)==1){
+                  //
+              }
+          }
+      }
+  }
+  */
   // Write voxels
   // to do
   auto stop = std::chrono::high_resolution_clock::now();
