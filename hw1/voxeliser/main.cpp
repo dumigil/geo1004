@@ -49,8 +49,8 @@ static bool abs_compare(float a, float b)
 int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
-  const char *file_out = "vox.obj";
-  float voxel_size = 15.0;
+  const char *file_out = "../triangle.obj";
+  float voxel_size =5.0;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
@@ -155,17 +155,16 @@ int main(int argc, const char * argv[]) {
                   float x_coord = float(i*voxel_size) + minX;
                   float y_coord = float(j*voxel_size) + minY;
                   float z_coord = float(h*voxel_size) + minZ;
-                  //std::cout<<x_coord<<" "<<y_coord<<" "<<z_coord<<std::endl;
-                  Point voxel_center=Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size, z_coord-0.5*voxel_size);
-                  Point x_max_face = Point(x_coord,y_coord-0.5*voxel_size,z_coord-0.5*voxel_size);
-                  Point x_min_face = Point(x_coord-voxel_size,y_coord-0.5*voxel_size,z_coord-0.5*voxel_size);
-                  Point y_max_face = Point(x_coord-0.5*voxel_size,y_coord,z_coord-0.5*voxel_size);
-                  Point y_min_face = Point(x_coord-0.5*voxel_size,y_coord-voxel_size,z_coord-0.5*voxel_size);
-                  Point z_max_face = Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size,z_coord);
-                  Point z_min_face = Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size,z_coord-voxel_size);
+                  Point voxel_center=Point(x_coord+0.5*voxel_size,y_coord+0.5*voxel_size, z_coord+0.5*voxel_size);
+                  Point x_max_face = Point(voxel_center.x+0.5*voxel_size,voxel_center.y,voxel_center.z);
+                  Point x_min_face = Point(voxel_center.x-0.5*voxel_size,voxel_center.y,voxel_center.z);
+                  Point y_max_face = Point(voxel_center.x,voxel_center.y+0.5*voxel_size,voxel_center.z);
+                  Point y_min_face = Point(voxel_center.x,voxel_center.y-0.5*voxel_size,voxel_center.z);
+                  Point z_max_face = Point(voxel_center.x,voxel_center.y,voxel_center.z+0.5*voxel_size);
+                  Point z_min_face = Point(voxel_center.x,voxel_center.y,voxel_center.z-0.5*voxel_size);
 
 
-                  if(intersects(x_min_face, x_max_face, p1, p2, p3) && intersects(y_min_face, y_max_face, p1, p2, p3) && intersects(z_min_face, z_max_face, p1, p2, p3)){
+                  if(intersects(x_min_face, x_max_face, p1, p2, p3) || intersects(y_min_face, y_max_face, p1, p2, p3) || intersects(z_min_face, z_max_face, p1, p2, p3)){
                       //std::cout<<"Intersection"<<std::endl;
                       voxels(i,j,h) = 1;
                   }
@@ -187,6 +186,8 @@ int main(int argc, const char * argv[]) {
   std::cout<<"--- Voxelisation done in " << elapsed.count() << " seconds ---"<<std::endl;
   auto startWrite = std::chrono::high_resolution_clock::now();
   std::ofstream outfile(file_out, std::ofstream::out);
+  int vertexCount = 0;
+  int b = 0;
 
     for (int i=0; i< voxels.max_x; i++) {
         for (int j = 0; j < voxels.max_y; j++) {
@@ -194,21 +195,43 @@ int main(int argc, const char * argv[]) {
                 float x_coord = float(i*voxel_size) + minX;
                 float y_coord = float(j*voxel_size) + minY;
                 float z_coord = float(h*voxel_size) + minZ;
-                Point voxel_center=Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size, z_coord-0.5*voxel_size);
+                float scale = 0.8;
+                float renderSize = 0.5*scale*voxel_size;
+                Point voxel_center=Point(x_coord+0.5*voxel_size,y_coord+0.5*voxel_size, z_coord+0.5*voxel_size);
+                float x = voxel_center.x;
+                float y = voxel_center.y;
+                float z = voxel_center.z;
 
                 if(voxels(i,j,h)==1) {
-                    
-                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord << " " << z_coord << std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord << " " << z_coord << std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord + voxel_size<< " " << z_coord << std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord + voxel_size<< " " << z_coord +voxel_size << std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord << " " << z_coord + voxel_size<< std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord << " " << z_coord + voxel_size<< std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord + voxel_size<< " " << z_coord << std::endl;
-                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord + voxel_size<< " " << z_coord +voxel_size<< std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y-renderSize<<" "<<z-renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y+renderSize<<" "<<z-renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x+renderSize<<" "<<y-renderSize<<" "<<z-renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x+renderSize<<" "<<y+renderSize<<" "<<z-renderSize<<std::endl;
+
+                    outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y-renderSize<<" "<<z+renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y+renderSize<<" "<<z+renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x+renderSize<<" "<<y-renderSize<<" "<<z+renderSize<<std::endl;
+                    outfile <<std::setprecision(8) << "v "<<x+renderSize<<" "<<y+renderSize<<" "<<z+renderSize<<std::endl;
+                    vertexCount += 8;
+                    outfile <<"f "<<b+1<<" "<<b+2<<" "<<b+3<<std::endl;
+                    outfile <<"f "<<b+2<<" "<<b+3<<" "<<b+4<<std::endl;
+                    outfile <<"f "<<b+1<<" "<<b+2<<" "<<b+6<<std::endl;
+                    outfile <<"f "<<b+1<<" "<<b+5<<" "<<b+6<<std::endl;
+                    outfile <<"f "<<b+1<<" "<<b+5<<" "<<b+7<<std::endl;
+                    outfile <<"f "<<b+1<<" "<<b+3<<" "<<b+7<<std::endl;
+                    outfile <<"f "<<b+4<<" "<<b+3<<" "<<b+7<<std::endl;
+                    outfile <<"f "<<b+4<<" "<<b+8<<" "<<b+7<<std::endl;
+                    outfile <<"f "<<b+4<<" "<<b+2<<" "<<b+6<<std::endl;
+                    outfile <<"f "<<b+4<<" "<<b+8<<" "<<b+6<<std::endl;
+                    outfile <<"f "<<b+8<<" "<<b+7<<" "<<b+6<<std::endl;
+                    outfile <<"f "<<b+5<<" "<<b+7<<" "<<b+6<<std::endl;
+                    b+=8;
                 }
             }
         }
+    }
+    for(int n=0; n<=vertexCount;n++){
+      //
     }
 
     outfile.close();
