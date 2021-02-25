@@ -2,11 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <filesystem>
 #include <string>
 #include <algorithm>
 #include <iomanip>
-namespace fs = std::filesystem;
 
 #include "Point.h"
 #include "Rows.h"
@@ -17,7 +15,6 @@ namespace fs = std::filesystem;
 float signed_volume(const Point &a, const Point &b, const Point &c, const Point &d) {
     Point cross= (b-d).cross(c-d);
     float dot = (a-d).dot(cross);
-    //float vol = (dot);
     return dot/6;
 }
 
@@ -25,7 +22,18 @@ bool intersects(const Point &orig, const Point &dest, const Point &v0, const Poi
     float origin = signed_volume(v0,v1,v2,orig);
     float destination= signed_volume(v0,v1,v2,dest);
     if((origin <0 && destination > 0) || (origin >0 && destination <0)){
-        return true;
+        float v0v1_tet = signed_volume(v0,orig, dest,v1);
+        float v0v2_tet = signed_volume(v0,orig, dest,v2);
+        float v1v0_tet = signed_volume(v1, orig, dest, v0);
+        float v1v2_tet = signed_volume(v1, orig, dest, v2);
+        float v2v1_tet = signed_volume(v2, orig, dest, v1);
+        float v2v0_tet = signed_volume(v2, orig, dest, v0);
+        if(v0v1_tet*v0v2_tet < 0 && v1v0_tet * v1v2_tet < 0 && v2v1_tet * v2v0_tet < 0) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     else{
         return false;
@@ -42,7 +50,8 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "vox.obj";
-  float voxel_size = 10.0;
+  float voxel_size = 15.0;
+  auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
 
@@ -53,7 +62,7 @@ int main(int argc, const char * argv[]) {
 
     if(!infile){
         std::cerr<<"Input file not found.\n";
-        return false;
+        return 1;
     }
     std::cout<<"Reading input file "<<input<<std::endl;
     std::string line;
@@ -90,8 +99,8 @@ int main(int argc, const char * argv[]) {
 
   // to do
   //std::cout<<"../"<<file_in<<std::endl;
-  std::cout<<vertices.size()<<" vertices read from .obj"<<std::endl;
-  std::cout<<faces.size()<<" faces read from .obj"<<std::endl;
+  std::cout<<vertices.size()<<" vertices read from"<< input<<std::endl;
+  std::cout<<faces.size()<<" faces read from .obj"<<input<<std::endl;
 
   //Compute bbox
   Point min_x = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
@@ -119,11 +128,11 @@ int main(int argc, const char * argv[]) {
   float maxX = max_x.x;;
   float maxY = max_y.y;
   float maxZ = max_z.z;;
-  std::cout<<maxX<<" "<<minX<<","<<maxY<<" "<<minY<<","<<maxZ<<" "<<minZ<<std::endl;
+  std::cout<<maxX<<" "<<minX<<", "<<maxY<<" "<<minY<<", "<<maxZ<<" "<<minZ<<std::endl;
   // Create grid
-  float xrows = floor((ceil(maxX) - floor(minX))/voxel_size);
-  float yrows = floor((ceil(maxY) - floor(minY))/voxel_size);
-  float zrows = floor((ceil(maxZ)- floor(minZ))/voxel_size);
+  float xrows = ceil((ceil(maxX) - floor(minX))/voxel_size);
+  float yrows = ceil((ceil(maxY) - floor(minY))/voxel_size);
+  float zrows = ceil((ceil(maxZ)- floor(minZ))/voxel_size);
   std::cout<<std::setprecision(6)<<xrows<<" "<<yrows<<" "<<zrows<<std::endl;
   Rows rows(xrows, yrows, zrows);
   std::cout<<rows<<std::endl;
@@ -143,9 +152,9 @@ int main(int argc, const char * argv[]) {
       for (int i=0; i< voxels.max_x; i++){
           for (int j=0; j<voxels.max_y; j++){
               for(int h=0; h<voxels.max_z; h++){
-                  float x_coord = float(i) + minX;
-                  float y_coord = float(j) + minY;
-                  float z_coord = float(h) + minZ;
+                  float x_coord = float(i*voxel_size) + minX;
+                  float y_coord = float(j*voxel_size) + minY;
+                  float z_coord = float(h*voxel_size) + minZ;
                   //std::cout<<x_coord<<" "<<y_coord<<" "<<z_coord<<std::endl;
                   Point voxel_center=Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size, z_coord-0.5*voxel_size);
                   Point x_max_face = Point(x_coord,y_coord-0.5*voxel_size,z_coord-0.5*voxel_size);
@@ -156,7 +165,7 @@ int main(int argc, const char * argv[]) {
                   Point z_min_face = Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size,z_coord-voxel_size);
 
 
-                  if(intersects(x_min_face,x_max_face,p1,p2,p3) && intersects(y_min_face,y_max_face,p1,p2,p3) && intersects(z_min_face,z_max_face,p1,p2,p3)){
+                  if(intersects(x_min_face, x_max_face, p1, p2, p3) && intersects(y_min_face, y_max_face, p1, p2, p3) && intersects(z_min_face, z_max_face, p1, p2, p3)){
                       //std::cout<<"Intersection"<<std::endl;
                       voxels(i,j,h) = 1;
                   }
@@ -173,6 +182,42 @@ int main(int argc, const char * argv[]) {
   
   // Write voxels
   // to do
-  
+  auto stop = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = stop - start;
+  std::cout<<"--- Voxelisation done in " << elapsed.count() << " seconds ---"<<std::endl;
+  auto startWrite = std::chrono::high_resolution_clock::now();
+  std::ofstream outfile(file_out, std::ofstream::out);
+
+    for (int i=0; i< voxels.max_x; i++) {
+        for (int j = 0; j < voxels.max_y; j++) {
+            for (int h = 0; h < voxels.max_z; h++) {
+                float x_coord = float(i*voxel_size) + minX;
+                float y_coord = float(j*voxel_size) + minY;
+                float z_coord = float(h*voxel_size) + minZ;
+                Point voxel_center=Point(x_coord-0.5*voxel_size,y_coord-0.5*voxel_size, z_coord-0.5*voxel_size);
+
+                if(voxels(i,j,h)==1) {
+                    
+                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord << " " << z_coord << std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord << " " << z_coord << std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord + voxel_size<< " " << z_coord << std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord + voxel_size<< " " << z_coord +voxel_size << std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord << " " << z_coord + voxel_size<< std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord << " " << z_coord + voxel_size<< std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord << " " << y_coord + voxel_size<< " " << z_coord << std::endl;
+                    outfile << std::setprecision(6) << "v " << x_coord + voxel_size<< " " << y_coord + voxel_size<< " " << z_coord +voxel_size<< std::endl;
+                }
+            }
+        }
+    }
+
+    outfile.close();
+    auto stopWrite = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsedWrite = stopWrite-startWrite;
+    std::cout<<"--- File written to "<< file_out<< " in " << elapsedWrite.count() << " seconds ---"<<std::endl;
+
+
+
+
   return 0;
 }
