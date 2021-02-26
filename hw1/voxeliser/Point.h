@@ -1,5 +1,6 @@
 #ifndef Point_h
 #define Point_h
+#include <assert.h>
 
 struct Point {
   float x, y, z;

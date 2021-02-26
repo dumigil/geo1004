@@ -1,5 +1,6 @@
 #ifndef VoxelGrid_h
 #define VoxelGrid_h
+#include <assert.h>
 
 struct VoxelGrid {
   std::vector<unsigned int> voxels;

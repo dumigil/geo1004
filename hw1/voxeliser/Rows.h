@@ -1,5 +1,6 @@
 #ifndef Rows_h
 #define Rows_h
+#include <assert.h>
 
 struct Rows {
   unsigned int x, y, z;

@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "../triangle.obj";
-  float voxel_size =0.5;
+  float voxel_size =1.0;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;

@@ -7,10 +7,16 @@
 #IncludeRegexTransform: 
 
 /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Point.h
+assert.h
+-
 
 /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/Rows.h
+assert.h
+-
 
 /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/VoxelGrid.h
+assert.h
+-
 
 /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw1/voxeliser/main.cpp
 iostream
