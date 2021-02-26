@@ -33,3 +33,4 @@
 *.app
 
 .DS_Store
+hw1/voxeliser/*.obj
