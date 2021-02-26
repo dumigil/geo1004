@@ -5,11 +5,13 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
+#include <future>
+#include <thread>
+#include <chrono>
 
 #include "Point.h"
 #include "Rows.h"
 #include "VoxelGrid.h"
-
 
 
 float signed_volume(const Point &a, const Point &b, const Point &c, const Point &d) {
@@ -50,7 +52,7 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "../triangle.obj";
-  float voxel_size =2.0;
+  float voxel_size =0.5;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
@@ -148,10 +150,35 @@ int main(int argc, const char * argv[]) {
     Point p1 = Point(vertices[triangle[0]]);
     Point p2 = Point(vertices[triangle[1]]);
     Point p3 = Point(vertices[triangle[2]]);
-    //std::cout<<p1<<" "<<p2<<" "<<p3<<std::endl;
-      for (int i=0; i< voxels.max_x; i++){
-          for (int j=0; j<voxels.max_y; j++){
-              for(int h=0; h<voxels.max_z; h++){
+    std::vector<Point> bbox = {p1, p2, p3};
+    Point tMinX = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.x < b.x;
+    });
+    Point tMinY = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.y < b.y;
+    });
+    Point tMinZ = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.z < b.z;
+    });
+    Point tMaxX = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.x > b.x;
+    });
+    Point tMaxY = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.y > b.y;
+    });
+    Point tMaxZ = *std::min_element(bbox.begin(), bbox.end(), [](const Point &a, const Point &b) {
+        return a.z > b.z;
+    });
+    int tRowXmin = floor(tMinX.x-minX)/voxel_size;
+    int tRowYmin = floor(tMinY.y-minY)/voxel_size;
+    int tRowZmin = floor(tMinZ.z-minZ)/voxel_size;
+    int tRowXmax = ceil(tMaxX.x-minX)/voxel_size;
+    int tRowYmax = ceil(tMaxY.y-minY)/voxel_size;
+    int tRowZmax = ceil(tMaxZ.z-minZ)/voxel_size;
+      //std::cout<<p1<<" "<<p2<<" "<<p3<<std::endl;
+      for (int i=tRowXmin; i< tRowXmax; i++){
+          for (int j=tRowYmin; j<tRowYmax; j++){
+              for(int h=tRowZmin; h<tRowZmax; h++){
                   float x_coord = float(i*voxel_size) + minX;
                   float y_coord = float(j*voxel_size) + minY;
                   float z_coord = float(h*voxel_size) + minZ;
@@ -178,17 +205,12 @@ int main(int argc, const char * argv[]) {
   
   // Fill model
   // to do
-  /*
-  for (int i=0; i< voxels.max_x; i++) {
-      for (int j = 0; j < voxels.max_y; j++) {
-          for (int h = 0; h < voxels.max_z; h++) {
-              if(voxels(i,j,h)==1){
-                  //
-              }
-          }
-      }
+
+  for (int i=0; i< voxels.voxels.size(); i++) {
+
+        //
   }
-  */
+
   // Write voxels
   // to do
   auto stop = std::chrono::high_resolution_clock::now();
