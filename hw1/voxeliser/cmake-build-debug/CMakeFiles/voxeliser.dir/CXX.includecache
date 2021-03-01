@@ -33,10 +33,6 @@ algorithm
 -
 iomanip
 -
-future
--
-thread
--
 chrono
 -
 Point.h

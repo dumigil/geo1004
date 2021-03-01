@@ -5,13 +5,12 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
-#include <future>
-#include <thread>
 #include <chrono>
 
 #include "Point.h"
 #include "Rows.h"
 #include "VoxelGrid.h"
+
 
 
 float signed_volume(const Point &a, const Point &b, const Point &c, const Point &d) {
@@ -52,7 +51,8 @@ int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
   const char *file_out = "../triangle.obj";
-  float voxel_size =1.0;
+  float voxel_size =3.0;
+  float voxelVolume= voxel_size * voxel_size * voxel_size;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
   std::vector<std::vector<unsigned int>> faces;
@@ -142,6 +142,7 @@ int main(int argc, const char * argv[]) {
     // to do
   VoxelGrid voxels(rows.x, rows.y, rows.z);
   std::cout<<voxels.voxels.size()<<std::endl;
+  int boundaryCells;
 
 
   // Voxelise
@@ -194,6 +195,7 @@ int main(int argc, const char * argv[]) {
                   if(intersects(x_min_face, x_max_face, p1, p2, p3) || intersects(y_min_face, y_max_face, p1, p2, p3) || intersects(z_min_face, z_max_face, p1, p2, p3)){
                       //std::cout<<"Intersection"<<std::endl;
                       voxels(i,j,h) = 1;
+                      boundaryCells ++;
                   }
                   else{
                       continue;
@@ -205,11 +207,25 @@ int main(int argc, const char * argv[]) {
   
   // Fill model
   // to do
+  int exteriorCells;
 
-  for (int i=0; i< voxels.voxels.size(); i++) {
+  for (int i=0; i< voxels.max_x; i++) {
+      for (int j=0; j< voxels.max_y; j++) {
+          for (int k = voxels.max_z - 1; k >= 0; k--) {
+              if(voxels(i,j,k) != 1){
+                  voxels(i,j,k) = 2;
+                  exteriorCells ++;
+              }
+              else{
+                  break;
+              }
 
-        //
+          }
+      }
   }
+  int interiorCells =  voxels.voxels.size() - exteriorCells - boundaryCells;
+  float volume = (boundaryCells * 0.5*voxelVolume) + (interiorCells*voxelVolume);
+  std::cout<<"--- The volume of this model is " <<std::setprecision(10)<< volume << " m^3 ---"<<std::endl;
 
   // Write voxels
   // to do
@@ -234,7 +250,7 @@ int main(int argc, const char * argv[]) {
                 float y = voxel_center.y;
                 float z = voxel_center.z;
 
-                if(voxels(i,j,h)==1) {
+                if(voxels(i,j,h) != 2) {
                     outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y-renderSize<<" "<<z-renderSize<<std::endl;
                     outfile <<std::setprecision(8) << "v "<<x-renderSize<<" "<<y+renderSize<<" "<<z-renderSize<<std::endl;
                     outfile <<std::setprecision(8) << "v "<<x+renderSize<<" "<<y-renderSize<<" "<<z-renderSize<<std::endl;
@@ -261,9 +277,6 @@ int main(int argc, const char * argv[]) {
                 }
             }
         }
-    }
-    for(int n=0; n<=vertexCount;n++){
-      //
     }
 
     outfile.close();
