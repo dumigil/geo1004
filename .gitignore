@@ -33,4 +33,7 @@
 *.app
 
 .DS_Store
-hw1/voxeliser/*.obj
+/voxeliser/*.obj
+*.pdf
+
+
