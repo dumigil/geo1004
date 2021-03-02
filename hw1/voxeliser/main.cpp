@@ -41,17 +41,12 @@ bool intersects(const Point &orig, const Point &dest, const Point &v0, const Poi
     }
 }
 
-static bool abs_compare(float a, float b)
-{
-    return (std::abs(a) < std::abs(b));
-}
-
 
 int main(int argc, const char * argv[]) {
   char *file_in = "bag_bk.obj";
   char *path = "../";
-  const char *file_out = "../triangle.obj";
-  float voxel_size =3.0;
+  const char *file_out = "../bk_voxelised.obj";
+  float voxel_size =1.0;
   float voxelVolume= voxel_size * voxel_size * voxel_size;
   auto start = std::chrono::high_resolution_clock::now();
   std::vector<Point> vertices;
@@ -66,7 +61,7 @@ int main(int argc, const char * argv[]) {
         std::cerr<<"Input file not found.\n";
         return 1;
     }
-    std::cout<<"Reading input file "<<input<<std::endl;
+    std::cout<<"--- Reading input file "<<input<<" ---"<<std::endl;
     std::string line;
     while(std::getline(infile, line)){
         if(line.substr(0,2)=="v "){
@@ -101,8 +96,8 @@ int main(int argc, const char * argv[]) {
 
   // to do
   //std::cout<<"../"<<file_in<<std::endl;
-  std::cout<<vertices.size()<<" vertices read from"<< input<<std::endl;
-  std::cout<<faces.size()<<" faces read from .obj"<<input<<std::endl;
+  std::cout<<"--- "<<vertices.size()<<" vertices read from"<< input<<" ---"<<std::endl;
+  std::cout<<"--- "<<faces.size()<<" faces read from "<<input<<" ---"<<std::endl;
 
   //Compute bbox
   Point min_x = *std::min_element(vertices.begin(), vertices.end(), [](const Point &a, const Point &b){
@@ -124,30 +119,29 @@ int main(int argc, const char * argv[]) {
         return a.z > b.z;
   });
 
-  float minX = min_x.x;;
+  float minX = min_x.x;
   float minY = min_y.y;
-  float minZ = min_z.z;;
-  float maxX = max_x.x;;
+  float minZ = min_z.z;
+  float maxX = max_x.x;
   float maxY = max_y.y;
-  float maxZ = max_z.z;;
-  std::cout<<maxX<<" "<<minX<<", "<<maxY<<" "<<minY<<", "<<maxZ<<" "<<minZ<<std::endl;
+  float maxZ = max_z.z;
+  //std::cout<<maxX<<" "<<minX<<", "<<maxY<<" "<<minY<<", "<<maxZ<<" "<<minZ<<std::endl;
   // Create grid
   float xrows = ceil((ceil(maxX) - floor(minX))/voxel_size);
   float yrows = ceil((ceil(maxY) - floor(minY))/voxel_size);
   float zrows = ceil((ceil(maxZ)- floor(minZ))/voxel_size);
-  std::cout<<std::setprecision(6)<<xrows<<" "<<yrows<<" "<<zrows<<std::endl;
+  //std::cout<<std::setprecision(6)<<xrows<<" "<<yrows<<" "<<zrows<<std::endl;
   Rows rows(xrows, yrows, zrows);
-  std::cout<<rows<<std::endl;
+  //std::cout<<rows<<std::endl;
 
     // to do
   VoxelGrid voxels(rows.x, rows.y, rows.z);
-  std::cout<<voxels.voxels.size()<<std::endl;
+  std::cout<<"--- A grid with "<<voxels.voxels.size()<<" voxels has been initialised ---"<<std::endl;
   int boundaryCells;
 
 
   // Voxelise
   for (auto const &triangle: faces) {
-    //std::cout<<vertices[triangle[0]]<<", "<<vertices[triangle[1]]<<", "<<vertices[triangle[2]]<<std::endl;
     Point p1 = Point(vertices[triangle[0]]);
     Point p2 = Point(vertices[triangle[1]]);
     Point p3 = Point(vertices[triangle[2]]);
@@ -207,31 +201,31 @@ int main(int argc, const char * argv[]) {
   
   // Fill model
   // to do
-  int exteriorCells;
+    int exteriorCells;
 
-  for (int i=0; i< voxels.max_x; i++) {
-      for (int j=0; j< voxels.max_y; j++) {
-          for (int k = voxels.max_z - 1; k >= 0; k--) {
-              if(voxels(i,j,k) != 1){
-                  voxels(i,j,k) = 2;
-                  exteriorCells ++;
-              }
-              else{
-                  break;
-              }
+    for (int i=0; i< voxels.max_x; i++) {
+        for (int j=0; j< voxels.max_y; j++) {
+            for (int k = voxels.max_z - 1; k >= 0; k--) {
+                if(voxels(i,j,k) != 1){
+                    voxels(i,j,k) = 2;
+                    exteriorCells ++;
+                }
+                else{
+                    break;
+                }
 
-          }
-      }
-  }
-  int interiorCells =  voxels.voxels.size() - exteriorCells - boundaryCells;
-  float volume = (boundaryCells * 0.5*voxelVolume) + (interiorCells*voxelVolume);
-  std::cout<<"--- The volume of this model is " <<std::setprecision(10)<< volume << " m^3 ---"<<std::endl;
+            }
+        }
+    }
+    int interiorCells =  voxels.voxels.size() - exteriorCells - boundaryCells;
+    float volume = (boundaryCells * 0.5*voxelVolume) + (interiorCells*voxelVolume);
+    std::cout<<"--- The volume of this model is " <<std::setprecision(10)<< volume << " m^3 ---"<<std::endl;
 
   // Write voxels
   // to do
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = stop - start;
-  std::cout<<"--- Voxelisation done in " << elapsed.count() << " seconds ---"<<std::endl;
+  std::cout<<"--- Voxelisation performed in " << elapsed.count() << " seconds ---"<<std::endl;
   auto startWrite = std::chrono::high_resolution_clock::now();
   std::ofstream outfile(file_out, std::ofstream::out);
   int vertexCount = 0;
