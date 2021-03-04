@@ -1,0 +1,3 @@
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/cmake-build-debug/CMakeFiles/soupchef.dir

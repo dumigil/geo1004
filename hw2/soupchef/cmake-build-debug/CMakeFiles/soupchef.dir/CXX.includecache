@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCEL.hpp
+DCELElements.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCELElements.hpp
+
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCELElements.hpp
+memory
+-
+
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/main.cpp
+iostream
+-
+list
+-
+DCEL.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCEL.hpp
+
