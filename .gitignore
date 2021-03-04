@@ -34,6 +34,10 @@
 
 .DS_Store
 /voxeliser/*.obj
-*.pdf
+/hw1/voxeliser/*.pdf
+/hw1/voxeliser/*.zip
+/hw1/voxeliser/*.obj
+
+
 
 
