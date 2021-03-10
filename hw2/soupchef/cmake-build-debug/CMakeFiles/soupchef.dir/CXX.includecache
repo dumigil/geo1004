@@ -6,19 +6,31 @@
 
 #IncludeRegexTransform: 
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCEL.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/DCEL.hpp
 DCELElements.hpp
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCELElements.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/DCELElements.hpp
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCELElements.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/DCELElements.hpp
 memory
 -
 
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/main.cpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/main.cpp
 iostream
 -
 list
 -
 DCEL.hpp
-/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/DCEL.hpp
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/DCEL.hpp
+fstream
+-
+string
+-
+sstream
+-
+vector
+-
+unordered_map
+-
+map
+-
 

@@ -1,11 +1,29 @@
 #include <iostream>
 #include <list>
 #include "DCEL.hpp"
-
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <unordered_map>
+#include <map>
 // forward declarations; these functions are given below main()
 void DemoDCEL();
 void printDCEL(DCEL & D);
+struct Point{
+    float x, y ,z;
+    Point() {
+        x = 0.0;
+        y = 0.0;
+        z = 0.0;
+    }
 
+    Point(const float &x, const float &y, const float &z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+};
 
 /* 
   Example functions that you could implement. But you are 
@@ -13,8 +31,101 @@ void printDCEL(DCEL & D);
   After each function you should have a DCEL without invalid elements!
 */
 // 1.
-void importOBJ(DCEL & D, const char *file_in) {
-  // to do
+void importOBJ(DCEL & D,const char *input) {
+  std::vector<std::vector<unsigned int>> faces;
+  std::map<unsigned int, Vertex*> map;
+  std::map<std::pair<int,int>, HalfEdge*> emap;
+  std::ifstream infile(input, std::ios::in);
+  if(!infile){
+      std::cerr<<"Input file not found\n";
+  }
+  int objIndex = 0;
+  std::cout<<"--- Reading input file "<< input <<" ---\n";
+  std::string line;
+  while(std::getline(infile, line)) {
+      if (line.substr(0, 2) == "v ") {
+
+          std::istringstream v(line.substr(2));
+            float x, y, z;
+            v >> x, v >> y, v >> z;
+            Vertex * vert = D.createVertex(x, y, z);
+            map[objIndex]=vert;
+            objIndex++;
+
+      }
+      else if (line.substr(0, 2) == "f ") {
+          std::istringstream f(line.substr(2));
+          std::vector<unsigned int> face;
+          int a, b, c;
+          f >> a, f >> b, f >> c;
+
+          a--;b--;c--;
+          Vertex* v0=map[a];
+          Vertex* v1=map[b];
+          Vertex* v2=map[c];
+          HalfEdge* e0= D.createHalfEdge();
+          HalfEdge* e1= D.createHalfEdge();
+          HalfEdge* e2= D.createHalfEdge();
+          Face*  f0=D.createFace();
+
+          std::pair<int,int>twin;
+          e0->origin = v0;
+          e0->destination = v1;
+          e0->next = e1;
+          e0->prev = e2;
+          e0->incidentFace = f0;
+          if(v0<=v1){
+              {twin.first=a;twin.second=b;}
+          }else{
+              {twin.first=b;twin.second=a;}
+          }if(emap.count(twin)==0){
+              emap[twin]=e0;
+          }else{
+              HalfEdge* etwin=emap[twin];
+              e0->twin=etwin;
+              emap[twin]->twin=e0;
+          }
+          e1->origin = v1;
+          e1->destination = v2;
+          e1->next = e2;
+          e1->prev = e0;
+          e1->incidentFace = f0;
+          if(v1<=v2){
+              {twin.first=b;twin.second=c;}
+          }else{
+              {twin.first=c;twin.second=b;}
+          }if(emap.count(twin)==0){
+              emap[twin]=e1;
+          }else{
+              HalfEdge* etwin=emap[twin];
+              e1->twin=etwin;
+              emap[twin]->twin=e1;
+          }
+          e2->origin = v2;
+          e2->destination = v0;
+          e2->next = e0;
+          e2->prev = e1;
+          e2->incidentFace = f0;
+          if(v2<=v0){
+              {twin.first=c;twin.second=a;}
+          }else{
+              {twin.first=a;twin.second=c;}
+          }if(emap.count(twin)==0){
+              emap[twin]=e2;
+          }else{
+              HalfEdge* etwin=emap[twin];
+              e2->twin=etwin;
+              emap[twin]->twin=e2;
+          }
+          f0->exteriorEdge = e0;
+
+
+      }
+  }
+  std::cout<<"--- "<<map.size()<<" vertices read from "<<input<<" ---\n";
+  printDCEL(D);
+
+
 }
 // 2.
 void groupTriangles(DCEL & D) {
@@ -35,15 +146,15 @@ void exportCityJSON(DCEL & D, const char *file_out) {
 
 
 int main(int argc, const char * argv[]) {
-  const char *file_in = "bk_soup.obj";
+  const char * file_in = "../../cube.obj";
   const char *file_out = "bk.json";
-
   // Demonstrate how to use the DCEL to get you started (see function implementation below)
   // you can remove this from the final code
-  DemoDCEL();
+  //DemoDCEL();
 
   // create an empty DCEL
   DCEL D;
+  importOBJ(D, file_in);
 
   // 1. read the triangle soup from the OBJ input file and convert it to the DCEL,
   

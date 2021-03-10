@@ -1,4 +1,4 @@
-# Install script for directory: /Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef
+# Install script for directory: /Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/michieldejong/Documents/GEOMATICS/GEO1004/hw01/hw2/soupchef/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw2/soupchef/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
