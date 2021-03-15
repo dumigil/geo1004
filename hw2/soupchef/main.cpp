@@ -5,25 +5,14 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <unordered_map>
+#include <chrono>
 #include <map>
 // forward declarations; these functions are given below main()
 void DemoDCEL();
 void printDCEL(DCEL & D);
-struct Point{
-    float x, y ,z;
-    Point() {
-        x = 0.0;
-        y = 0.0;
-        z = 0.0;
-    }
-
-    Point(const float &x, const float &y, const float &z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-};
+std::map<Vertex*,unsigned int> invMap;
+std::map<std::pair<int,int>, HalfEdge*> emap;
+std::map<unsigned int, Vertex*> map;
 
 /* 
   Example functions that you could implement. But you are 
@@ -33,8 +22,7 @@ struct Point{
 // 1.
 void importOBJ(DCEL & D,const char *input) {
   std::vector<std::vector<unsigned int>> faces;
-  std::map<unsigned int, Vertex*> map;
-  std::map<std::pair<int,int>, HalfEdge*> emap;
+
   std::ifstream infile(input, std::ios::in);
   if(!infile){
       std::cerr<<"Input file not found\n";
@@ -50,6 +38,7 @@ void importOBJ(DCEL & D,const char *input) {
             v >> x, v >> y, v >> z;
             Vertex * vert = D.createVertex(x, y, z);
             map[objIndex]=vert;
+            invMap[vert]=objIndex;
             objIndex++;
 
       }
@@ -123,17 +112,52 @@ void importOBJ(DCEL & D,const char *input) {
       }
   }
   std::cout<<"--- "<<map.size()<<" vertices read from "<<input<<" ---\n";
-  printDCEL(D);
+  //printDCEL(D);
 
 
 }
 // 2.
 void groupTriangles(DCEL & D) {
-  // to do
+    std::stack<Face*> faceStack;
+    std::list<Face*> inMesh;
+    std::list<Face*> checkList;
+    for(const auto &face:D.faces()){
+        if(std::find(checkList.begin(), checkList.end(), face.get())!= checkList.end()){
+            continue;
+        }
+        else{
+            faceStack.push(face.get());
+        }
+        inMesh.clear();
+        while(faceStack.empty()== false){
+            Face* f = faceStack.top();
+            faceStack.pop();
+            std::vector<HalfEdge*> faceEdges = {f->exteriorEdge, f->exteriorEdge->next, f->exteriorEdge->prev};
+            for(const auto &currEdge: faceEdges){
+                if(std::find(checkList.begin(), checkList.end(), currEdge->twin->incidentFace) != checkList.end()){
+                    continue;
+                }
+                else {
+                    faceStack.push(currEdge->twin->incidentFace);
+                    checkList.push_back(currEdge->twin->incidentFace);
+                    inMesh.push_back(currEdge->twin->incidentFace);
+                }
+            }
+
+        }
+        std::cout<<inMesh.size()<<std::endl;
+        D.infiniteFace()->holes.push_back(face->exteriorEdge);
+    }
+
+
 }
 // 3.
 void orientMeshes(DCEL & D) {
-  // to do
+  for(const auto &face: D.faces()){
+      //check orientation per face
+        std::pair<int, int> edges = {invMap[face->exteriorEdge->origin],invMap[face->exteriorEdge->destination]};
+
+  }
 }
 // 4.
 void mergeCoPlanarFaces(DCEL & D) {
@@ -141,13 +165,68 @@ void mergeCoPlanarFaces(DCEL & D) {
 }
 // 5.
 void exportCityJSON(DCEL & D, const char *file_out) {
-  // to do
+    auto startWrite = std::chrono::high_resolution_clock::now();
+
+    std::ofstream outfile(file_out, std::ofstream::out);
+    outfile<<"{\n";
+    outfile<<"  \"type\": \"CityJSON\",\n";
+    outfile<<"  \"version\": \"1.0\",\n";
+    outfile<<"  \"CityObjects\": {\n";
+    outfile<<"      \"id-1\": {\n";
+    outfile<<"          \"type\": \"Building\",\n";
+    outfile<<"          \"geometry\": [{\n";
+    outfile<<"              \"type\": \"MultiSurface\",\n";
+    outfile<<"              \"lod\": 1,\n";
+    outfile<<"              \"boundaries\": [\n";
+    std::string delim;
+
+
+
+    for(auto &each: D.faces()){
+
+        HalfEdge* ef= each->exteriorEdge;
+        Vertex* curr = ef->origin;
+        Vertex* next = ef->next->origin;
+        std::string comma;
+
+        outfile << "                  " << delim << "[[";
+        HalfEdge* e = each->exteriorEdge;
+        const HalfEdge* e_start = e;
+        do {
+            outfile <<comma<< invMap[e->origin];
+            e = e->next;
+            comma=", ";
+        } while ( e_start!=e) ;
+        outfile<<"]]\n ";
+        delim = ", ";
+    }
+    outfile<<"               ]\n";
+    outfile<<"          }]\n";
+
+    outfile<<"          }\n";
+    outfile<<"  },\n";
+    outfile<<"  \"vertices\": [\n";
+
+    delim="";
+    for(auto &all: D.vertices()){
+        outfile<<std::setprecision(6)<<"    "<<delim<<"[ "<<all->x<<", "<<all->y<<", "<<all->z<<"]\n";
+        delim=",";
+    }
+    outfile<<"  ]\n";
+    outfile<<"}\n";
+
+
+
+    outfile.close();
+    auto stopWrite = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsedWrite = stopWrite-startWrite;
+    std::cout<<"--- File written to "<< file_out<< " in " << elapsedWrite.count() << " seconds ---"<<std::endl;
 }
 
 
 int main(int argc, const char * argv[]) {
-  const char * file_in = "../../cube.obj";
-  const char *file_out = "bk.json";
+  const char * file_in = "../../bk_soup.obj";
+  const char *file_out = "../bk.json";
   // Demonstrate how to use the DCEL to get you started (see function implementation below)
   // you can remove this from the final code
   //DemoDCEL();
@@ -155,19 +234,19 @@ int main(int argc, const char * argv[]) {
   // create an empty DCEL
   DCEL D;
   importOBJ(D, file_in);
-
   // 1. read the triangle soup from the OBJ input file and convert it to the DCEL,
   
   // 2. group the triangles into meshes,
-  
-  // 3. determine the correct orientation for each mesh and ensure all its triangles 
+  groupTriangles(D);
+
+  // 3. determine the correct orientation for each mesh and ensure all its triangles
   //    are consistent with this correct orientation (ie. all the triangle normals 
   //    are pointing outwards).
-  
+  orientMeshes(D);
   // 4. merge adjacent triangles that are co-planar into larger polygonal faces.
   
   // 5. write the meshes with their faces to a valid CityJSON output file.
-
+  exportCityJSON(D,file_out);
   return 0;
 }
 
