@@ -10,8 +10,6 @@
 // forward declarations; these functions are given below main()
 void DemoDCEL();
 void printDCEL(DCEL & D);
-Vertex findOrigin(DCEL &D);
-float signedVolume( Vertex* &a,  Vertex* &b,  Vertex* &c,  Vertex* &d);
 void flipFace(const Face* face);
 
 //global maps used
@@ -47,6 +45,8 @@ struct Point {
         return Point(y * other.z - z * other.y, -(x * other.z - z * other.x), x * other.y - y * other.x);
     }
 };
+Point findOrigin(DCEL &D);
+float signedVolume( Vertex* &a,  Vertex* &b,  Vertex* &c,  Point &d);
 
 
 
@@ -170,7 +170,7 @@ void groupTriangles(DCEL & D) {
         while(faceStack.empty()== false){
             Face* f = faceStack.top();
             faceStack.pop();
-            std::vector<HalfEdge*> faceEdges = {f->exteriorEdge, f->exteriorEdge->next, f->exteriorEdge->prev};
+            std::vector<HalfEdge*> faceEdges = {f->exteriorEdge, f->exteriorEdge->next, f->exteriorEdge->next->next};
             for(const auto &currEdge: faceEdges){
                 if(std::find(checkList.begin(), checkList.end(), currEdge->twin->incidentFace) != checkList.end()){
                     continue;
@@ -192,46 +192,43 @@ void groupTriangles(DCEL & D) {
 }
 // 3.
 void orientMeshes(DCEL & D) {
-    std::list<Face*> correctList;
     std::list<Face*> checkList;
     std::stack<Face*> s;
-    Vertex org = findOrigin(D);
-    Vertex *origin=&org;
-    Face* face = D.faces().begin()->get();
+    Point org = findOrigin(D);
     for(const auto &meshes: D.infiniteFace()->holes){
         Face* f0 = meshes->incidentFace;
-        float vol = signedVolume(f0->exteriorEdge->origin, f0->exteriorEdge->next->origin, f0->exteriorEdge->prev->origin, origin);
-        correctList.clear();
+        Point centroid = Point((f0->exteriorEdge->origin->x+f0->exteriorEdge->next->origin->x+f0->exteriorEdge->next->next->origin->x)/3,
+                               (f0->exteriorEdge->origin->y+f0->exteriorEdge->next->origin->y+f0->exteriorEdge->next->next->origin->y)/3,
+                               (f0->exteriorEdge->origin->z+f0->exteriorEdge->next->origin->z+f0->exteriorEdge->next->next->origin->z)/3);
+        float vol = signedVolume(f0->exteriorEdge->origin, f0->exteriorEdge->next->origin, f0->exteriorEdge->next->next->origin, org);
+        float vol_cent = signedVolume(f0->exteriorEdge->origin, f0->exteriorEdge->next->origin, f0->exteriorEdge->next->next->origin, centroid);
+        std::cout<<vol<<" and "<<vol_cent<<std::endl;
         if(vol > 0){
-            checkList.push_back(f0);
             s.push(f0);
         }
         else{
             flipFace(f0);
-            checkList.push_back(f0);
             s.push(f0);
         }
-        for(const auto &f: D.faces()) {
-            while (s.empty() == false) {
-                Face *f_curr = s.top();
-                s.pop();
-                std::vector<HalfEdge *> faceEdges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
-                                                     f_curr->exteriorEdge->prev};
-                for (const auto &e: faceEdges) {
-                    if (std::find(checkList.begin(), checkList.end(), f) != checkList.end()) {
-                        continue;
-                    } else {
-                        if (e->origin != e->twin->destination || e->destination != e->twin->origin) {
-                            flipFace(e->twin->incidentFace);
-                            s.push(e->twin->incidentFace);
-                            correctList.push_back(e->twin->incidentFace);
-                            checkList.push_back(e->twin->incidentFace);
-                        }
+        while (s.empty() == false) {
+            Face *f_curr = s.top();
+            s.pop();
+            std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
+                                            f_curr->exteriorEdge->next->next};
+            for (const auto &e: edges) {
+                if (std::find(checkList.begin(), checkList.end(), e->twin->incidentFace) != checkList.end()) {
+                    continue;
+                } else {
+                    if (e->origin != e->twin->destination || e->destination != e->twin->origin){
+                        flipFace(e->twin->incidentFace);
+                        s.push(e->twin->incidentFace);
+                        checkList.push_back(e->twin->incidentFace);
                     }
                 }
-
             }
         }
+        std::cout<<checkList.size()<<std::endl;
+
 
 
 
@@ -245,7 +242,9 @@ void orientMeshes(DCEL & D) {
 }
 // 4.
 void mergeCoPlanarFaces(DCEL & D) {
-  // to do
+  for(auto &f: D.faces()){
+      flipFace(f.get());
+  }
 }
 // 5.
 void exportCityJSON(DCEL & D, const char *file_out) {
@@ -307,23 +306,23 @@ void exportCityJSON(DCEL & D, const char *file_out) {
     std::cout<<"--- File written to "<< file_out<< " in " << elapsedWrite.count() << " seconds ---"<<std::endl;
 }
 
-Vertex findOrigin(DCEL &D){
+Point findOrigin(DCEL &D){
     Vertex* minx=D.vertices().begin()->get();
     Vertex* miny=D.vertices().begin()->get();
     Vertex* minz=D.vertices().begin()->get();
     for(const auto &v: D.vertices()){
-        if(v->x<minx->x){
+        if(v->x>minx->x){
             minx=v.get();
         }
-        if(v->y<miny->y){
+        if(v->y>miny->y){
             miny=v.get();
         }
-        if(v->z<minz->z){
+        if(v->z>minz->z){
             minz=v.get();
         }
 
     }
-    return Vertex(minx->x-1,miny->y-1,minz->y-1);
+    return Point(minx->x+10,miny->y+10,minz->y+10);
 }
 
 float normalVector(HalfEdge* &e1, HalfEdge* &e2, HalfEdge* &e3){
@@ -346,24 +345,25 @@ void flipFace(const Face* face){
     int e2_d =invMap[face->exteriorEdge->prev->destination];
     face->exteriorEdge->origin=map[e0_d];
     face->exteriorEdge->destination=map[e0_o];
-    face->exteriorEdge->next->origin=map[e1_d];
-    face->exteriorEdge->next->destination=map[e1_o];
-    face->exteriorEdge->prev->origin=map[e2_d];
-    face->exteriorEdge->prev->destination=map[e2_o];
+    face->exteriorEdge->next->origin=map[e2_d];
+    face->exteriorEdge->next->destination=map[e2_o];
+    face->exteriorEdge->prev->origin=map[e1_d];
+    face->exteriorEdge->prev->destination=map[e1_o];
 }
 
-float signedVolume( Vertex* &a,  Vertex* &b,  Vertex* &c,  Vertex* &d){
+
+float signedVolume( Vertex* &a,  Vertex* &b,  Vertex* &c,  Point &d){
     Point aP = Point(a->x, a->y, a->z);
     Point bP = Point(b->x, b->y, b->z);
     Point cP = Point(c->x, c->y, c->z);
-    Point dP = Point(d->x, d->y, d->z);
+    Point dP = d;
     Point cross= (bP-dP).cross(cP-dP);
     float dot = (aP-dP).dot(cross);
     return dot/6;
 }
 
 int main(int argc, const char * argv[]) {
-  const char * file_in = "../../isolated_cubes.obj";
+  const char * file_in = "../../bk_soup.obj";
   const char *file_out = "../bk.json";
   // Demonstrate how to use the DCEL to get you started (see function implementation below)
   // you can remove this from the final code
@@ -382,7 +382,7 @@ int main(int argc, const char * argv[]) {
   //    are pointing outwards).
   orientMeshes(D);
   // 4. merge adjacent triangles that are co-planar into larger polygonal faces.
-  
+  //mergeCoPlanarFaces(D);
   // 5. write the meshes with their faces to a valid CityJSON output file.
   exportCityJSON(D,file_out);
   return 0;
