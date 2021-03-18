@@ -217,10 +217,10 @@ void groupTriangles(DCEL & D) {
 // 3.
 void orientMeshes(DCEL & D) {
     int flips=0;
-    for(auto const &meshes: D.infiniteFace()->holes){
+    for(auto const meshes: D.infiniteFace()->holes){
         auto f0 = meshes->prev->incidentFace;
         Point centroid = findCentroid(f0);
-        Point origin = Point(centroid.x-2, centroid.y-2, centroid.z+100);
+        Point origin = Point(centroid.x-10, centroid.y-10, centroid.z-10);
         float vol = signedVolume(f0->exteriorEdge->origin, f0->exteriorEdge->next->origin, f0->exteriorEdge->next->next->origin, origin);
         if(vol > 0){
             flipFace(f0);
@@ -235,7 +235,7 @@ void orientMeshes(DCEL & D) {
             std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
                                             f_curr->exteriorEdge->prev};
             std::vector<HalfEdge*> edges2 = {};
-            for (auto const &e: edges) {
+            for (auto const e: edges) {
                 if (std::find(checkList.begin(), checkList.end(), e->twin->incidentFace) != checkList.end()) {
                     continue;
                 } else{
@@ -244,13 +244,14 @@ void orientMeshes(DCEL & D) {
                         edges2.push_back(e->twin);
                 }
             }
-            for (auto const &e: edges2){
+            for (auto const e: edges2){
                 //std::cout<<e->incidentFace<<": "<<e->origin<<"--> "<<e->destination<<" vs "<<e->twin->incidentFace<<" :"<<e->twin->destination<<"<-- "<<e->twin->origin<<std::endl;
                 if (e->origin != e->twin->destination){
                     flipFace(e->incidentFace);
                     flips ++;
                 }
             }
+
         }
         std::cout<<checkList.size()<<"/"<<D.faces().size()<<" faces checked with " <<flips<<" faces flipped"<<std::endl;
     }
@@ -258,62 +259,39 @@ void orientMeshes(DCEL & D) {
 }
 // 4.
 void mergeCoPlanarFaces(DCEL & D) {
-  std::vector<Face*> total;
-  for(auto const &mesh: D.infiniteFace()->holes){
-      auto f0 = mesh->prev->incidentFace;
-      std::list<Face*> meshList;
-      std::stack<Face*> meshStack;
-      meshList.push_back(f0);
-      meshStack.push(f0);
-      total.push_back(f0);
-      while(meshStack.empty()==false){
-          auto f_curr = meshStack.top();
-          meshStack.pop();
-          std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
-                                          f_curr->exteriorEdge->prev};
-          std::vector<HalfEdge*> twins;
-          for(auto const &e: edges){
-              if (std::find(meshList.begin(), meshList.end(), e->twin->incidentFace) != meshList.end()) {
-                  continue;
-              }else{
-                  meshList.push_back(e->twin->incidentFace);
-                  meshStack.push(e->twin->incidentFace);
-                  twins.push_back(e->twin);
-
-              }
-          }
-          for(auto const &e: twins) {
-
-              if (normalVector(e->incidentFace).x == normalVector(e->twin->incidentFace).x &&
-                  normalVector(e->incidentFace).y == normalVector(e->twin->incidentFace).y &&
-                  normalVector(e->incidentFace).z == normalVector(e->twin->incidentFace).z) {
-                  std::cout<<"This face has"<<normalVector(e->twin->incidentFace)<<" as normal vector, with these twins also having:\n";
-                  std::cout << normalVector(e->incidentFace)<<" as normal vector" << std::endl;
-                  auto fin=e->twin->incidentFace;
-                  e->twin->prev->next=e->next;
-                  e->twin->next->prev=e->prev;
-                  e->next->prev=e->twin->next;
-                  e->prev->next=e->twin->prev;
-                  //meshList.remove(e->incidentFace);
-
-                  e->incidentFace->eliminate();
-                  auto e_walk = e;
-                  auto e_start = e_walk;
-                  do {
-                      e_walk->incidentFace=fin;
-                      e_walk = e_walk->next;
-                  } while ( e_start!=e_walk) ; // we stop the loop when e_start==e (ie. we are back where we started)
-                  e->twin->eliminate();
-                  e->eliminate();
-                  total.push_back(fin);
-
-              }
-          }
-      }
-      std::cout<<meshList.size()<<"/"<<D.faces().size()<<" checked\n";
-  }
-  //std::cout<<total.size()<<"/"<<D.faces().size()<<"checked\n";
-  D.cleanup();
+    std::list<HalfEdge*> edgesRemoved;
+    for(auto const &mesh: D.infiniteFace()->holes){
+        auto f0 = mesh->prev->incidentFace;
+        std::list<Face*> meshList;
+        std::stack<Face*> meshStack;
+        meshList.push_back(f0);
+        meshStack.push(f0);
+        while(meshStack.empty()==false){
+            auto f_curr = meshStack.top();
+            meshStack.pop();
+            std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
+                                            f_curr->exteriorEdge->prev};
+            std::vector<HalfEdge*> twins;
+            for(auto const &e: edges){
+                if (std::find(meshList.begin(), meshList.end(), e->twin->incidentFace) != meshList.end()) {
+                    continue;
+                }else{
+                    meshList.push_back(e->twin->incidentFace);
+                    meshStack.push(e->twin->incidentFace);
+                    twins.push_back(e->twin);
+                }
+            }
+            for(auto const &e: twins) {
+                if (normalVector(e->incidentFace).x == normalVector(e->twin->incidentFace).x &&
+                    normalVector(e->incidentFace).y == normalVector(e->twin->incidentFace).y &&
+                    normalVector(e->incidentFace).z == normalVector(e->twin->incidentFace).z) {
+                    edgesRemoved.push_back(e);
+                }
+            }
+        }
+    }
+  std::cout<<edgesRemoved.size()<<std::endl;
+  //D.cleanup();
   printDCEL(D);
 
 }
@@ -329,7 +307,6 @@ void exportCityJSON(DCEL & D, const char *file_out) {
     outfile<<"  \"CityObjects\": {\n";
     for(auto const &mesh: D.infiniteFace()->holes) {
         auto f0 = mesh->prev->incidentFace;
-
         outfile << "      "<<delim2<<"\"id-"<<n<<"\": {\n";
         outfile << "          \"type\": \"BuildingPart\",\n";
         outfile << "          \"geometry\": [{\n";
@@ -338,37 +315,46 @@ void exportCityJSON(DCEL & D, const char *file_out) {
         outfile << "              \"boundaries\": [\n";
         std::string delim;
         std::list<Face*> meshList;
+        std::list<Face*> buildingList;
+        buildingList.clear();
         std::stack<Face*> meshStack;
+
+        buildingList.push_back(f0);
         meshList.push_back(f0);
         meshStack.push(f0);
         while(meshStack.empty()==false) {
             auto f_curr = meshStack.top();
             meshStack.pop();
-            std::vector<HalfEdge *> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
-                                             f_curr->exteriorEdge->prev};
-            std::vector<HalfEdge *> twins;
+            std::vector<HalfEdge *> edges;
+            HalfEdge *e = f_curr->exteriorEdge;
+            HalfEdge *e_start = e;
+            do {
+                edges.push_back(e);
+                e = e->next;
+            } while (e_start != e);
             for (auto const &e: edges) {
                 if (std::find(meshList.begin(), meshList.end(), e->twin->incidentFace) != meshList.end()) {
                     continue;
                 } else {
                     meshList.push_back(e->twin->incidentFace);
                     meshStack.push(e->twin->incidentFace);
-                    twins.push_back(e->twin);
+                    buildingList.push_back(e->twin->incidentFace);
 
                 }
             }
-            for (auto &e: twins) {
-                std::string comma;
-                outfile << "                  " << delim << "[[";
-                auto e_start = e;
-                do {
-                    outfile << comma << invMap[e->origin];
-                    e = e->next;
-                    comma = ", ";
-                } while (e_start != e);
-                outfile << "]]\n ";
-                delim = ", ";
-            }
+        }
+        for(auto const &f: buildingList){
+            std::string comma;
+            outfile << "                  " << delim << "[[";
+            auto edge=f->exteriorEdge;
+            auto edge_start = edge;
+            do {
+                outfile << comma << invMap[edge->origin];
+                edge = edge->next;
+                comma = ", ";
+            } while (edge_start != edge);
+            outfile << "]]\n ";
+            delim = ", ";
         }
         outfile << "               ]\n";
         outfile << "          }]\n";
@@ -395,7 +381,7 @@ void exportCityJSON(DCEL & D, const char *file_out) {
 
 
 int main(int argc, const char * argv[]) {
-  const char * file_in = "../../bk_soup.obj";
+  const char * file_in = "../../cube_soup.obj";
   const char *file_out = "../bk2.json";
   // Demonstrate how to use the DCEL to get you started (see function implementation below)
   // you can remove this from the final code
@@ -414,7 +400,7 @@ int main(int argc, const char * argv[]) {
   //    are pointing outwards).
   orientMeshes(D);
   // 4. merge adjacent triangles that are co-planar into larger polygonal faces.
-  //mergeCoPlanarFaces(D);
+  mergeCoPlanarFaces(D);
   // 5. write the meshes with their faces to a valid CityJSON output file.
   exportCityJSON(D,file_out);
   return 0;
