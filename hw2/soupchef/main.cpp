@@ -220,7 +220,7 @@ void orientMeshes(DCEL & D) {
     for(auto const meshes: D.infiniteFace()->holes){
         auto f0 = meshes->prev->incidentFace;
         Point centroid = findCentroid(f0);
-        Point origin = Point(centroid.x-10, centroid.y-10, centroid.z-10);
+        Point origin = Point(centroid.x-2, centroid.y-2, centroid.z+55);
         float vol = signedVolume(f0->exteriorEdge->origin, f0->exteriorEdge->next->origin, f0->exteriorEdge->next->next->origin, origin);
         if(vol > 0){
             flipFace(f0);
@@ -259,73 +259,63 @@ void orientMeshes(DCEL & D) {
 }
 // 4.
 void mergeCoPlanarFaces(DCEL & D) {
-    std::list<HalfEdge*> edgesRemoved;
-    for(auto const &mesh: D.infiniteFace()->holes){
-        auto f0 = mesh->prev->incidentFace;
-        std::list<Face*> meshList;
-        std::stack<Face*> meshStack;
-        meshList.push_back(f0);
-        meshStack.push(f0);
-        while(meshStack.empty()==false){
-            auto f_curr = meshStack.top();
-            meshStack.pop();
-            std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
-                                            f_curr->exteriorEdge->prev};
-            for(auto const e: edges){
-                if (std::find(meshList.begin(), meshList.end(), e->twin->incidentFace) != meshList.end()) {
-                    continue;
-                }else{
-                    meshList.push_back(e->twin->incidentFace);
-                    meshStack.push(e->twin->incidentFace);
-                    //std::cout<<normalVector(e->incidentFace)<<" and "<<normalVector(e->twin->incidentFace)<<std::endl;
-                    if (normalVector(e->incidentFace).x == normalVector(e->twin->incidentFace).x &&
-                        normalVector(e->incidentFace).y == normalVector(e->twin->incidentFace).y &&
-                        normalVector(e->incidentFace).z == normalVector(e->twin->incidentFace).z) {
-                        //std::cout << f_curr << std::endl;
-                        if(std::find(edgesRemoved.begin(), edgesRemoved.end(), e->twin) == edgesRemoved.end()){
-                            edgesRemoved.push_back(e);
-                        }
+    for(auto const mesh: D.infiniteFace()->holes){
+        std::stack<HalfEdge*> edgeStack;
+        std::list<HalfEdge*> checkedList;
+        edgeStack.push(mesh);
+        while(edgeStack.empty()==false){
+            auto ec=edgeStack.top();
+            edgeStack.pop();
+            if (std::find(checkedList.begin(), checkedList.end(), ec) != checkedList.end()) {
+                continue;
+            } else{
+                auto ec1 = ec->next;
+                auto ec2 = ec->prev;
+                auto ec1n = ec->twin->next;
+                auto ec2n = ec->twin->prev;
+                auto f0 = ec->incidentFace;
+                auto fn = ec->twin->incidentFace;
+                auto edgenext = ec->next->twin;
+                auto edgeprev = ec->prev->twin;
+                std::cout<<normalVector(ec1->incidentFace)<<" and "<<normalVector(ec1n->incidentFace)<<std::endl;
+                if( (normalVector(ec1->incidentFace).x == normalVector(ec1n->incidentFace).x &&
+                        normalVector(ec1->incidentFace).y == normalVector(ec1n->incidentFace).y &&
+                        normalVector(ec1->incidentFace).z == normalVector(ec1n->incidentFace).z ) &&
+                        (ec2n != ec1->twin && ec2 != ec1n->twin) ){
+                    if(f0 == fn){
+                        continue;
+                    }else{
+                       if(ec->incidentFace == f0){
+                           f0->exteriorEdge = ec1n;
+                       }
+                       fn->eliminate();
                     }
+                    ec->eliminate();
+                    ec->twin->eliminate();
+
+                    ec1->prev=ec2n;
+                    ec2->next=ec1n;
+                    ec1n->prev=ec2;
+                    ec1n->next=ec1;
+
+                    const auto e_start = ec1n;
+                    do{
+                        ec1n->incidentFace = f0;
+                        ec1n=ec1n->next;
+                    } while(e_start != ec1n);
+                    checkedList.push_back(ec);
+                    checkedList.push_back(ec->twin);
+
+                    std::cout<<"hey\n";
+                    edgeStack.push(edgenext);
+                    edgeStack.push(edgeprev);
+
+
+
                 }
             }
         }
-        std::cout<<edgesRemoved.size()<<std::endl;
     }
-    for(auto edge: edgesRemoved){
-        const auto f0 = edge->incidentFace;
-        const auto fn = edge->twin->incidentFace;
-        auto e_next = edge->next;
-        auto e_prev = edge->prev;
-        auto et_next = edge->twin->next;
-        auto et_prev = edge->twin->prev;
-
-        //fix links
-        edge->next->prev=et_prev;
-        edge->prev->next=et_next;
-        edge->twin->prev=e_prev;
-        edge->twin->next=e_next;
-
-        //elminate pointers
-        edge->eliminate();
-        edge->twin->eliminate();
-        fn->eliminate();
-        //edgesRemoved.remove(edge);
-        //edgesRemoved.remove(edge->twin);
-
-        //set all the interior faces to f0
-        HalfEdge*  edge2=f0->exteriorEdge;
-        const HalfEdge* e_start=edge2;
-        do {
-            edge2->incidentFace = f0;
-            edge2 = edge2->next;
-        }while(e_start!=edge2);
-        f0->exteriorEdge=e_next
-    }
-
-    //D.cleanup();
-
-  printDCEL(D);
-
 }
 // 5.
 void exportCityJSON(DCEL & D, const char *file_out) {
