@@ -271,27 +271,59 @@ void mergeCoPlanarFaces(DCEL & D) {
             meshStack.pop();
             std::vector<HalfEdge*> edges = {f_curr->exteriorEdge, f_curr->exteriorEdge->next,
                                             f_curr->exteriorEdge->prev};
-            std::vector<HalfEdge*> twins;
-            for(auto const &e: edges){
+            for(auto const e: edges){
                 if (std::find(meshList.begin(), meshList.end(), e->twin->incidentFace) != meshList.end()) {
                     continue;
                 }else{
                     meshList.push_back(e->twin->incidentFace);
                     meshStack.push(e->twin->incidentFace);
-                    twins.push_back(e->twin);
-                }
-            }
-            for(auto const &e: twins) {
-                if (normalVector(e->incidentFace).x == normalVector(e->twin->incidentFace).x &&
-                    normalVector(e->incidentFace).y == normalVector(e->twin->incidentFace).y &&
-                    normalVector(e->incidentFace).z == normalVector(e->twin->incidentFace).z) {
-                    edgesRemoved.push_back(e);
+                    //std::cout<<normalVector(e->incidentFace)<<" and "<<normalVector(e->twin->incidentFace)<<std::endl;
+                    if (normalVector(e->incidentFace).x == normalVector(e->twin->incidentFace).x &&
+                        normalVector(e->incidentFace).y == normalVector(e->twin->incidentFace).y &&
+                        normalVector(e->incidentFace).z == normalVector(e->twin->incidentFace).z) {
+                        //std::cout << f_curr << std::endl;
+                        if(std::find(edgesRemoved.begin(), edgesRemoved.end(), e->twin) == edgesRemoved.end()){
+                            edgesRemoved.push_back(e);
+                        }
+                    }
                 }
             }
         }
+        std::cout<<edgesRemoved.size()<<std::endl;
     }
-  std::cout<<edgesRemoved.size()<<std::endl;
-  //D.cleanup();
+    for(auto edge: edgesRemoved){
+        const auto f0 = edge->incidentFace;
+        const auto fn = edge->twin->incidentFace;
+        auto e_next = edge->next;
+        auto e_prev = edge->prev;
+        auto et_next = edge->twin->next;
+        auto et_prev = edge->twin->prev;
+
+        //fix links
+        edge->next->prev=et_prev;
+        edge->prev->next=et_next;
+        edge->twin->prev=e_prev;
+        edge->twin->next=e_next;
+
+        //elminate pointers
+        edge->eliminate();
+        edge->twin->eliminate();
+        fn->eliminate();
+        //edgesRemoved.remove(edge);
+        //edgesRemoved.remove(edge->twin);
+
+        //set all the interior faces to f0
+        HalfEdge*  edge2=f0->exteriorEdge;
+        const HalfEdge* e_start=edge2;
+        do {
+            edge2->incidentFace = f0;
+            edge2 = edge2->next;
+        }while(e_start!=edge2);
+        f0->exteriorEdge=e_next
+    }
+
+    //D.cleanup();
+
   printDCEL(D);
 
 }
