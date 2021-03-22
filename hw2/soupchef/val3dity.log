@@ -1,0 +1,60 @@
+
+######### Validating Feature #########
+id:   id_1
+type: Building
+--
+======== Validating Primitive ========
+MultiSurface
+id: id_1(0)
+--
+--- MultiSurface validation ---
+-----2D validation of each surface
+-----Triangulation of each surface
+-----Planarity of surfaces (with normals deviation)
+========= VALID =========
+--- Interactions between BuildingParts ---
+
+######### Validating Feature #########
+id:   id_2
+type: Building
+--
+======== Validating Primitive ========
+MultiSurface
+id: id_2(0)
+--
+--- MultiSurface validation ---
+-----2D validation of each surface
+-----Triangulation of each surface
+-----Planarity of surfaces (with normals deviation)
+========= VALID =========
+--- Interactions between BuildingParts ---
+
+######### Validating Feature #########
+id:   id_3
+type: Building
+--
+======== Validating Primitive ========
+MultiSurface
+id: id_3(0)
+--
+--- MultiSurface validation ---
+-----2D validation of each surface
+-----Triangulation of each surface
+-----Planarity of surfaces (with normals deviation)
+========= VALID =========
+--- Interactions between BuildingParts ---
+
+######### Validating Feature #########
+id:   id_4
+type: Building
+--
+======== Validating Primitive ========
+MultiSurface
+id: id_4(0)
+--
+--- MultiSurface validation ---
+-----2D validation of each surface
+-----Triangulation of each surface
+-----Planarity of surfaces (with normals deviation)
+========= VALID =========
+--- Interactions between BuildingParts ---

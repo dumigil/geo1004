@@ -1,0 +1,92 @@
+{
+  "all_errors": [],
+  "dataset_errors": [],
+  "features": [
+    {
+      "errors": [],
+      "id": "id_1",
+      "primitives": [
+        {
+          "id": "id_1(0)",
+          "numberfaces": 4654,
+          "numbervertices": 2329,
+          "type": "MultiSurface",
+          "validity": true
+        }
+      ],
+      "type": "Building",
+      "validity": true
+    },
+    {
+      "errors": [],
+      "id": "id_2",
+      "primitives": [
+        {
+          "id": "id_2(0)",
+          "numberfaces": 400,
+          "numbervertices": 202,
+          "type": "MultiSurface",
+          "validity": true
+        }
+      ],
+      "type": "Building",
+      "validity": true
+    },
+    {
+      "errors": [],
+      "id": "id_3",
+      "primitives": [
+        {
+          "id": "id_3(0)",
+          "numberfaces": 140,
+          "numbervertices": 72,
+          "type": "MultiSurface",
+          "validity": true
+        }
+      ],
+      "type": "Building",
+      "validity": true
+    },
+    {
+      "errors": [],
+      "id": "id_4",
+      "primitives": [
+        {
+          "id": "id_4(0)",
+          "numberfaces": 36,
+          "numbervertices": 20,
+          "type": "MultiSurface",
+          "validity": true
+        }
+      ],
+      "type": "Building",
+      "validity": true
+    }
+  ],
+  "features_overview": [
+    {
+      "total": 4,
+      "type": "Building",
+      "valid": 4
+    }
+  ],
+  "input_file": "bk2.json",
+  "input_file_type": "CityJSON",
+  "parameters": {
+    "overlap_tol": -1.0,
+    "planarity_d2p_tol": 0.01,
+    "planarity_n_tol": 20.0,
+    "snap_tol": 0.001
+  },
+  "primitives_overview": [
+    {
+      "total": 4,
+      "type": "MultiSurface",
+      "valid": 4
+    }
+  ],
+  "time": "Sat Mar 20 17:35:39 2021 CET",
+  "type": "val3dity_report",
+  "val3dity_version": "2.2.0",
+  "validity": true
+}
