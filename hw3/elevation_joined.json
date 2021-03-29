@@ -2800,7 +2800,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035761",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -5426,7 +5426,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000018314",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1930-01-01Z"
 			}
 		},
@@ -15535,7 +15535,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000021137",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1924-01-01Z"
 			}
 		},
@@ -24562,7 +24562,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000012607",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1994-01-01Z"
 			}
 		},
@@ -27280,7 +27280,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000015497",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1948-01-01Z"
 			}
 		},
@@ -27702,7 +27702,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000015594",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1928-01-01Z"
 			}
 		},
@@ -30787,7 +30787,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000016774",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1951-01-01Z"
 			}
 		},
@@ -31334,7 +31334,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000016873",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1951-01-01Z"
 			}
 		},
@@ -32500,7 +32500,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000016983",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1948-01-01Z"
 			}
 		},
@@ -33288,7 +33288,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000018495",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1920-01-01Z"
 			}
 		},
@@ -45248,7 +45248,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000027155",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1948-01-01Z"
 			}
 		},
@@ -56454,7 +56454,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000000284",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1976-01-01Z"
 			}
 		},
@@ -58243,7 +58243,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000004999",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1988-01-01Z"
 			}
 		},
@@ -58292,7 +58292,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000005000",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1680-01-01Z"
 			}
 		},
@@ -62654,7 +62654,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000024962",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1988-01-01Z"
 			}
 		},
@@ -63149,7 +63149,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000025505",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1965-01-01Z"
 			}
 		},
@@ -66062,7 +66062,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034534",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2015-01-01Z"
 			}
 		},
@@ -66149,7 +66149,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034845",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -66277,7 +66277,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034940",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2015-01-01Z"
 			}
 		},
@@ -66310,7 +66310,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035047",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -66336,7 +66336,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035237",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -66356,7 +66356,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035373",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2015-01-01Z"
 			}
 		},
@@ -66476,7 +66476,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035605",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -66696,7 +66696,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035775",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66716,7 +66716,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035776",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66736,7 +66736,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035777",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66756,7 +66756,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035778",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66776,7 +66776,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035779",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66796,7 +66796,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035780",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66816,7 +66816,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035781",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66836,7 +66836,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035782",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -66859,7 +66859,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035783",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67362,7 +67362,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035807",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67382,7 +67382,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035808",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67402,7 +67402,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035809",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67422,7 +67422,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035810",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67442,7 +67442,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035811",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67462,7 +67462,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035812",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67482,7 +67482,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035813",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67715,7 +67715,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035826",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67820,7 +67820,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035831",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67880,7 +67880,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035942",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -67934,7 +67934,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036021",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -67975,7 +67975,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036064",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -68016,7 +68016,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036317",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -68036,7 +68036,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036327",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -68056,7 +68056,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036350",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -68076,7 +68076,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036545",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68098,7 +68098,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036550",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -68118,7 +68118,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036551",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -68138,7 +68138,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036723",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68158,7 +68158,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036729",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68178,7 +68178,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036730",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68198,7 +68198,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036731",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68219,7 +68219,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036811",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2015-01-01Z"
 			}
 		},
@@ -68259,7 +68259,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036838",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -68697,7 +68697,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034101",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2016-01-01Z"
 			}
 		},
@@ -68750,7 +68750,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034476",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2014-01-01Z"
 			}
 		},
@@ -68770,7 +68770,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035274",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2015-01-01Z"
 			}
 		},
@@ -68790,7 +68790,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036087",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2014-01-01Z"
 			}
 		},
@@ -72925,7 +72925,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034978",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2014-01-01Z"
 			}
 		},
@@ -72947,7 +72947,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035491",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -72967,7 +72967,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035492",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -72987,7 +72987,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035493",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73007,7 +73007,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035494",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73027,7 +73027,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035495",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73047,7 +73047,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035496",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73067,7 +73067,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035497",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73087,7 +73087,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035498",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73107,7 +73107,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035499",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73127,7 +73127,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035500",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73147,7 +73147,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035501",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73171,7 +73171,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035517",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73191,7 +73191,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035518",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73215,7 +73215,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035519",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73237,7 +73237,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035520",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73257,7 +73257,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035537",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73277,7 +73277,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035538",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73304,7 +73304,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035539",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73324,7 +73324,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035540",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73344,7 +73344,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035541",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73366,7 +73366,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035542",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73386,7 +73386,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035543",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73410,7 +73410,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035956",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -73430,7 +73430,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035957",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -73486,7 +73486,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036085",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73506,7 +73506,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036086",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73526,7 +73526,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036561",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -73546,7 +73546,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036562",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -73566,7 +73566,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036563",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -73754,7 +73754,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035502",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73775,7 +73775,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035503",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73795,7 +73795,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035504",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73815,7 +73815,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035505",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73836,7 +73836,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035507",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73856,7 +73856,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035508",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73878,7 +73878,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035509",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73898,7 +73898,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035510",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73918,7 +73918,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035511",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73938,7 +73938,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035512",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73958,7 +73958,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035513",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73978,7 +73978,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035514",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -73998,7 +73998,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035515",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74018,7 +74018,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035516",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74040,7 +74040,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035521",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74060,7 +74060,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035522",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74082,7 +74082,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035523",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74102,7 +74102,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035525",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74122,7 +74122,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035526",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74144,7 +74144,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035532",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74167,7 +74167,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035533",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74191,7 +74191,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035534",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74212,7 +74212,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035535",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74232,7 +74232,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035536",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2017-01-01Z"
 			}
 		},
@@ -74252,7 +74252,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035958",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74276,7 +74276,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035959",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74296,7 +74296,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035960",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74316,7 +74316,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035961",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74338,7 +74338,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035962",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74358,7 +74358,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035963",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74378,7 +74378,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035969",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74398,7 +74398,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035990",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74418,7 +74418,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035991",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74438,7 +74438,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035992",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74458,7 +74458,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035993",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74478,7 +74478,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035994",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74500,7 +74500,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035995",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74522,7 +74522,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035996",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74542,7 +74542,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035997",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74562,7 +74562,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035998",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74582,7 +74582,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035999",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74696,7 +74696,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000034783",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1951-01-01Z"
 			}
 		},
@@ -74777,7 +74777,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035966",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74799,7 +74799,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035967",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74819,7 +74819,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000035968",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2018-01-01Z"
 			}
 		},
@@ -74847,7 +74847,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036352",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -74869,7 +74869,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000036353",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2019-01-01Z"
 			}
 		},
@@ -76134,7 +76134,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000015955",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "1990-01-01Z"
 			}
 		},
@@ -76425,7 +76425,7 @@
 			},
 			"properties" : {
 				"identificatie" : "0503100000016271",
-				"_elevation_max" : null,
+				"_elevation_max" : 0,
 				"bouwjaar" : "2004-01-01Z"
 			}
 		},

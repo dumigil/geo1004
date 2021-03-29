@@ -98,8 +98,27 @@ void importGeoJSON(const std::string json_in){
     json j;infile >>j;
     auto features = j["features"];
     for(auto &all: features){
-        std::cout<<all["geometry"]<<std::endl;
-        
+        std::vector<Point> base;
+        std::vector<Point> roof;
+        auto geom = all["geometry"]["coordinates"];
+        auto height = all["properties"]["_elevation_max"];
+        auto id = all["properties"]["identificatie"];
+        auto year = all["properties"]["bouwjaar"];
+        for(auto &xy: geom){
+            for(auto &p: xy){
+                if(height != 0){
+                    //std::cout<<p[0]<<" and "<<p[1]<<std::endl;
+                    Point p_base = Point(p[0],p[1],0);
+                    Point p_roof = Point(p[0], p[1], height);
+                    base.push_back(p_base);
+                    roof.push_back(p_roof);
+                }
+            }
+
+        }
+        std::cout<<base.size()<<std::endl;
+
+
     }
     //std::cout<<features<<std::endl;
 
