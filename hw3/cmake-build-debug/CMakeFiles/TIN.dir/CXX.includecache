@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/Points.h
+
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/main.cpp
+iostream
+-
+list
+-
+iostream
+-
+fstream
+-
+vector
+-
+sstream
+-
+map
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/map
+stack
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/stack
+Points.h
+/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/Points.h
+
