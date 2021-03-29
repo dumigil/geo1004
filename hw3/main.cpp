@@ -88,9 +88,17 @@ void exportCityJSON(const char *file_out) {
     outfile.close();
 }
 
-void importGeoJSON(const std::string json_in){
+void importGeoJSON(const std::string json_in, const std::string json_out){
+    std::vector<Point> vertices;
+    int i=0;
+    int k=1;
     std::ifstream infile(json_in, std::ios::in);
-
+    std::ofstream outfile(json_out, std::ios::out);
+    std::string delim2="";
+    outfile<<"{\n";
+    outfile<<"  \"type\": \"CityJSON\",\n";
+    outfile<<"  \"version\": \"1.0\",\n";
+    outfile<<"  \"CityObjects\": {\n";
     if(!infile){
         std::cerr<<"Input file not found\n";
         return;
@@ -98,28 +106,78 @@ void importGeoJSON(const std::string json_in){
     json j;infile >>j;
     auto features = j["features"];
     for(auto &all: features){
-        std::vector<Point> base;
-        std::vector<Point> roof;
+        std::vector<int> base;
+        std::vector<int> roof;
+
         auto geom = all["geometry"]["coordinates"];
-        auto height = all["properties"]["_elevation_max"];
+        float height = all["properties"]["_elevation_max"];
         auto id = all["properties"]["identificatie"];
         auto year = all["properties"]["bouwjaar"];
+        auto storeys = floor(height/3);
         for(auto &xy: geom){
             for(auto &p: xy){
                 if(height != 0){
-                    //std::cout<<p[0]<<" and "<<p[1]<<std::endl;
                     Point p_base = Point(p[0],p[1],0);
+                    base.push_back(i);
+                    i+=2;
+                    vertices.push_back(p_base);
+
                     Point p_roof = Point(p[0], p[1], height);
-                    base.push_back(p_base);
-                    roof.push_back(p_roof);
+                    roof.push_back(k);
+                    k+=2;
+                    vertices.push_back(p_roof);
                 }
             }
 
         }
-        std::cout<<base.size()<<std::endl;
+        outfile << "      "<<delim2<<id<<": {\n";
+        outfile << "          \"type\": \"Building\",\n";
+        outfile << "          \"attributes\": {\n";
+        outfile << "              \"yearOfConstruction\": "<<year<<" ,\n";
+        outfile << "              \"measuredHeight\": "<<height<<" ,\n";
+        outfile << "              \"storeysAboveGround\": "<<storeys<<"\n";
+        outfile << "          },\n";
+        outfile << "          \"geometry\": [{\n";
+        outfile << "              \"type\": \"MultiSurface\",\n";
+        outfile << "              \"lod\": 1.2,\n";
+        outfile << "              \"boundaries\": [\n";
+        std::string delim;
+        std::string comma;
+        outfile << "                  " << delim << "[[";
+        for(auto &v: base){
+            outfile << comma << v;
+            comma = ", ";
+        }
+        outfile << "]]\n ";
+        outfile<<", ";
+        comma="";
+        delim="";
+        outfile << "                  " << delim << "[[";
+        for(auto &v: roof){
+            outfile << comma << v;
+            comma = ", ";
+        }
+        outfile << "]]\n ";
+
+        outfile << "               ]\n";
+        outfile << "          }]\n";
+
+        outfile << "          }"<<"\n";
+        delim2=", ";
 
 
     }
+    outfile<<"  },\n";
+    outfile<<"  \"vertices\": [\n";
+    std::string delim;
+    delim="";
+    for(auto &e: vertices){
+        outfile<<std::setprecision(6)<<"    "<<delim<<"[ "<<e.x<<", "<<e.y<<", "<<e.z<<"]\n";
+        delim=",";
+    }
+    outfile<<"  ]\n";
+    outfile<<"}\n";
+    outfile.close();
     //std::cout<<features<<std::endl;
 
 }
@@ -127,11 +185,12 @@ void importGeoJSON(const std::string json_in){
 int main(int argc, const char * argv[]) {
     const char *file_in = "C:\\Users\\theoj\\Desktop\\TIN\\LAS.obj";
     const char *file_out = "C:\\Users\\theoj\\Desktop\\TIN\\Tin.json";
+    std::string json_out = "../buildings.json";
     std::string json_path = JSON_ELEV_PATH;
     fs::path working_dir = fs::path(json_path).parent_path();
     fs::current_path(working_dir);
     //importOBJ(file_in);
-    importGeoJSON(json_path);
+    importGeoJSON(json_path, json_out);
     //exportCityJSON(file_out);
     return 0;
 }
