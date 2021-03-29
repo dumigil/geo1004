@@ -7,6 +7,10 @@
 #include "map"
 #include "stack"
 #include "Points.h"
+#include <filesystem>
+namespace fs = std::filesystem;
+#include "json.hpp"
+using json = nlohmann::json;
 std::map<int,Point> vmap;
 int count=0;
 std::vector<Point> vertices;
@@ -84,17 +88,31 @@ void exportCityJSON(const char *file_out) {
     outfile.close();
 }
 
-void importGeoJSON(const char *json_in){
-    
+void importGeoJSON(const std::string json_in){
+    std::ifstream infile(json_in, std::ios::in);
+
+    if(!infile){
+        std::cerr<<"Input file not found\n";
+        return;
+    }
+    json j;infile >>j;
+    auto features = j["features"];
+    for(auto &all: features){
+        std::cout<<all["geometry"]<<std::endl;
+        
+    }
+    //std::cout<<features<<std::endl;
+
 }
 
 int main(int argc, const char * argv[]) {
     const char *file_in = "C:\\Users\\theoj\\Desktop\\TIN\\LAS.obj";
     const char *file_out = "C:\\Users\\theoj\\Desktop\\TIN\\Tin.json";
-    const char *json_in = "../elevation_joined.json";
-
+    std::string json_path = JSON_ELEV_PATH;
+    fs::path working_dir = fs::path(json_path).parent_path();
+    fs::current_path(working_dir);
     //importOBJ(file_in);
-
+    importGeoJSON(json_path);
     //exportCityJSON(file_out);
     return 0;
 }
