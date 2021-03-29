@@ -7,6 +7,7 @@
 #include "map"
 #include "stack"
 #include "Points.h"
+#include <algorithm>
 #include <filesystem>
 namespace fs = std::filesystem;
 #include "json.hpp"
@@ -108,7 +109,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
     for(auto &all: features){
         std::vector<int> base;
         std::vector<int> roof;
-
+        std::vector<std::vector<int>> walls;
         auto geom = all["geometry"]["coordinates"];
         float height = all["properties"]["_elevation_max"];
         auto id = all["properties"]["identificatie"];
@@ -128,8 +129,18 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
                     vertices.push_back(p_roof);
                 }
             }
-
         }
+        if(base.size()!=0) {
+            for (int b = 0; b < base.size() - 1; b++) {
+                std::vector<int> wall;
+                wall.push_back(base[b]);
+                wall.push_back(base[b + 1]);
+                wall.push_back(roof[b + 1]);
+                wall.push_back(roof[b]);
+                walls.push_back(wall);
+            }
+        }
+
         outfile << "      "<<delim2<<id<<": {\n";
         outfile << "          \"type\": \"Building\",\n";
         outfile << "          \"attributes\": {\n";
@@ -144,14 +155,32 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         std::string delim;
         std::string comma;
         outfile << "                  " << delim << "[[";
+
+        std::reverse(base.begin(), base.end());
         for(auto &v: base){
             outfile << comma << v;
             comma = ", ";
         }
+
         outfile << "]]\n ";
         outfile<<", ";
+        for(auto &w: walls) {
+            comma = "";
+            delim = "";
+
+            outfile << "                  " << delim << "[[";
+
+            for (auto &wall: w) {
+                outfile << comma << wall;
+                comma = ", ";
+            }
+
+            outfile << "]]\n ";
+            outfile << ", ";
+        }
         comma="";
         delim="";
+
         outfile << "                  " << delim << "[[";
         for(auto &v: roof){
             outfile << comma << v;
