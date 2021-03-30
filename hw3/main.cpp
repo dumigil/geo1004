@@ -155,13 +155,13 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         auto id = all["properties"]["identificatie"];
         auto year = all["properties"]["bouwjaar"];
         auto storeys = ceil(height/3);
-        std::vector<std::vector<Point2d>> rings;
+        std::vector<std::vector<Point>> rings;
         for(auto &xy: geom){
-            std::vector<Point2d> base_ring;
+            std::vector<Point> base_ring;
             for(const auto &p: xy){
 
                 if(height != 0){
-                    Point2d p_base = Point2d(p[0],p[1]);
+                    Point p_base = Point(p[0],p[1],p[2]);
                     base_ring.push_back(p_base);
                 }
             }
@@ -171,7 +171,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             std::vector<int> base_ring;
             std::vector<int> roof_ring;
             for(auto point: ring){
-                Point pt_base = Point(point.x, point.y, 0);
+                Point pt_base = Point(point.x, point.y, point.z);
                 base_ring.push_back(ii);
                 ii+=2;
                 vertices.push_back(pt_base);
