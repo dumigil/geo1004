@@ -89,16 +89,53 @@ void exportCityJSON(const char *file_out) {
     outfile.close();
 }
 
+struct Point2d{
+    float x, y;
+
+    Point2d() {
+        x = 0.0;
+        y = 0.0;
+    }
+    Point2d(const float &x, const float &y) {
+        this->x = x;
+        this->y = y;
+    }
+    float &operator[](const int &coordinate) {
+        if (coordinate == 0) return x;
+        else if (coordinate == 1) return y;
+        else assert(false);
+    }
+
+    float operator[](const int &coordinate) const {
+        if (coordinate == 0) return x;
+        else if (coordinate == 1) return y;
+        else assert(false);
+    }
+};
+std::ostream& operator<<(std::ostream& os, const Point2d& p) {
+    os << "(" << p.x << ", " << p.y <<")";
+    return os;
+}
+
+
+
+
 void importGeoJSON(const std::string json_in, const std::string json_out){
     std::vector<Point> vertices;
     int i=0;
     int k=1;
+    int ii=0;
+    int kk=1;
     std::ifstream infile(json_in, std::ios::in);
     std::ofstream outfile(json_out, std::ios::out);
     std::string delim2="";
     outfile<<"{\n";
     outfile<<"  \"type\": \"CityJSON\",\n";
     outfile<<"  \"version\": \"1.0\",\n";
+    outfile<<"  \"metadata\": {\n";
+    outfile<<"      \"referenceSystem\": \"urn:ogc:def:crs:EPSG::7415\"\n";
+    outfile<<"                },\n";
+
     outfile<<"  \"CityObjects\": {\n";
     if(!infile){
         std::cerr<<"Input file not found\n";
@@ -110,13 +147,47 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         std::vector<int> base;
         std::vector<int> roof;
         std::vector<std::vector<int>> walls;
+        std::vector<std::vector<int>> base_rings;
+        std::vector<std::vector<int>> roof_rings;
+
         auto geom = all["geometry"]["coordinates"];
         float height = all["properties"]["_elevation_max"];
         auto id = all["properties"]["identificatie"];
         auto year = all["properties"]["bouwjaar"];
-        auto storeys = floor(height/3);
+        auto storeys = ceil(height/3);
+        std::vector<std::vector<Point2d>> rings;
         for(auto &xy: geom){
-            for(auto &p: xy){
+            std::vector<Point2d> base_ring;
+            for(const auto &p: xy){
+
+                if(height != 0){
+                    Point2d p_base = Point2d(p[0],p[1]);
+                    base_ring.push_back(p_base);
+                }
+            }
+            rings.push_back(base_ring);
+        }
+        for(auto ring: rings){
+            std::vector<int> base_ring;
+            std::vector<int> roof_ring;
+            for(auto point: ring){
+                Point pt_base = Point(point.x, point.y, 0);
+                base_ring.push_back(ii);
+                ii+=2;
+                vertices.push_back(pt_base);
+                Point pt_roof = Point(point.x, point.y, height);
+                roof_ring.push_back(kk);
+                kk+=2;
+                vertices.push_back(pt_roof);
+
+            }
+            base_rings.push_back(base_ring);
+            roof_rings.push_back(roof_ring);
+        }
+
+        /*
+        for(auto &xy: geom){
+            for(const auto &p: xy){
                 if(height != 0){
                     Point p_base = Point(p[0],p[1],0);
                     base.push_back(i);
@@ -130,70 +201,130 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
                 }
             }
         }
-        if(base.size()!=0) {
-            for (int b = 0; b < base.size() - 1; b++) {
-                std::vector<int> wall;
-                wall.push_back(base[b]);
-                wall.push_back(base[b + 1]);
-                wall.push_back(roof[b + 1]);
-                wall.push_back(roof[b]);
-                walls.push_back(wall);
+         */
+        if(!base_rings.empty()){
+            for(int a=0; a<base_rings.size();a++){
+                for(int x=1; x<base_rings[a].size();x++){
+                    std::vector<int> wall;
+                    wall.push_back(base_rings[a][x-1]);
+                    wall.push_back(base_rings[a][x]);
+                    wall.push_back(roof_rings[a][x]);
+                    wall.push_back(roof_rings[a][x-1]);
+                    walls.push_back(wall);
+                }
             }
         }
 
-        outfile << "      "<<delim2<<id<<": {\n";
-        outfile << "          \"type\": \"Building\",\n";
-        outfile << "          \"attributes\": {\n";
-        outfile << "              \"yearOfConstruction\": "<<year<<" ,\n";
-        outfile << "              \"measuredHeight\": "<<height<<" ,\n";
-        outfile << "              \"storeysAboveGround\": "<<storeys<<"\n";
-        outfile << "          },\n";
-        outfile << "          \"geometry\": [{\n";
-        outfile << "              \"type\": \"MultiSurface\",\n";
-        outfile << "              \"lod\": 1.2,\n";
-        outfile << "              \"boundaries\": [\n";
-        std::string delim;
-        std::string comma;
-        outfile << "                  " << delim << "[[";
+        if(base_rings[0].size()!=0) {
+            /*
+            for (int b = 1; b < base.size(); b++) {
+                std::vector<int> wall;
+                wall.push_back(base[b-1]);
+                wall.push_back(base[b]);
+                wall.push_back(roof[b]);
+                wall.push_back(roof[b-1]);
+                walls.push_back(wall);
+            }*/
 
-        std::reverse(base.begin(), base.end());
-        for(auto &v: base){
-            outfile << comma << v;
-            comma = ", ";
-        }
 
-        outfile << "]]\n ";
-        outfile<<", ";
-        for(auto &w: walls) {
+            outfile << "      " << delim2 << id << ": {\n";
+            outfile << "          \"type\": \"Building\",\n";
+            outfile << "          \"attributes\": {\n";
+            outfile << "              \"yearOfConstruction\": " << year << " ,\n";
+            outfile << "              \"measuredHeight\": " << height << " ,\n";
+            outfile << "              \"storeysAboveGround\": " << storeys << "\n";
+            outfile << "          },\n";
+            outfile << "          \"geometry\": [{\n";
+            outfile << "              \"type\": \"MultiSurface\",\n";
+            outfile << "              \"lod\": 1.2,\n";
+            outfile << "              \"boundaries\": [\n";
+            std::string delim;
+            std::string comma;
+            outfile << "                  " << delim << "[";
+            for(auto all:base_rings){
+                std::reverse(all.begin(), all.end());
+            }
+            std::string delim3=" ";
+
+            for(auto base:base_rings) {
+
+                outfile << "                  " << delim3 << "[";
+                std::string comma3=" ";
+
+                for (auto &v: base) {
+                    outfile << comma3 << v;
+                    comma3 = ", ";
+                }
+                delim3=", ";
+                outfile << "]\n ";
+
+            }
+
+            outfile << "]\n ";
+            outfile << ", ";
+
+            for (auto &w: walls) {
+                comma = "";
+                delim = "";
+
+                outfile << "                  " << delim << "[[";
+
+                for (auto &wall: w) {
+                    outfile << comma << wall;
+                    comma = ", ";
+                }
+
+                outfile << "]]\n ";
+                outfile << ", ";
+            }
+
             comma = "";
             delim = "";
 
-            outfile << "                  " << delim << "[[";
+            delim3=" ";
+            outfile<<"[";
+            for(auto roof:roof_rings) {
 
-            for (auto &wall: w) {
-                outfile << comma << wall;
+                outfile << "                  " << delim3 << "[";
+                std::string comma3=" ";
+
+                for (auto &v: roof) {
+                    outfile << comma3 << v;
+                    comma3 = ", ";
+                }
+                delim3=", ";
+                outfile << "]\n ";
+
+            }
+            outfile<<"]";
+
+            outfile << "               ],\n";
+            outfile << "              \"semantics\": {\n";
+            outfile << "                \"surfaces\": [\n";
+            outfile << "                            {\n";
+            outfile << "              \"type\": \"GroundSurface\"\n";
+            outfile << "                            },\n";
+            outfile << "                            {\n";
+            outfile << "              \"type\": \"WallSurface\"\n";
+            outfile << "                            },\n";
+            outfile << "                            {\n";
+            outfile << "              \"type\": \"RoofSurface\"\n";
+            outfile << "                            }\n";
+            outfile << "                ]," << "\n";
+            outfile << "              \"values\": [0, ";
+            comma = "";
+            for (auto &n: walls) {
+                outfile << comma << 1;
                 comma = ", ";
             }
+            outfile << ", 2] \n";
+            outfile << "                }" << "\n";
 
-            outfile << "]]\n ";
-            outfile << ", ";
+            outfile << "          }]\n";
+
+            outfile << "          }" << "\n";
+            delim2 = ", ";
         }
-        comma="";
-        delim="";
-
-        outfile << "                  " << delim << "[[";
-        for(auto &v: roof){
-            outfile << comma << v;
-            comma = ", ";
-        }
-        outfile << "]]\n ";
-
-        outfile << "               ]\n";
-        outfile << "          }]\n";
-
-        outfile << "          }"<<"\n";
-        delim2=", ";
-
 
     }
     outfile<<"  },\n";
