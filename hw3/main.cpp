@@ -235,18 +235,21 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             outfile << "              \"storeysAboveGround\": " << storeys << "\n";
             outfile << "          },\n";
             outfile << "          \"geometry\": [{\n";
-            outfile << "              \"type\": \"MultiSurface\",\n";
+            outfile << "              \"type\": \"Solid\",\n";
             outfile << "              \"lod\": 1.2,\n";
-            outfile << "              \"boundaries\": [\n";
+            outfile << "              \"boundaries\": [[\n";
             std::string delim;
             std::string comma;
-            outfile << "                  " << delim << "[";
+            outfile << delim << "[";
+            /*
             for(auto all:base_rings){
                 std::reverse(all.begin(), all.end());
             }
+             */
             std::string delim3=" ";
 
             for(auto base:base_rings) {
+                std::reverse(base.begin(), base.end());
 
                 outfile << "                  " << delim3 << "[";
                 std::string comma3=" ";
@@ -283,8 +286,10 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
 
             delim3=" ";
             outfile<<"[";
-            for(auto roof:roof_rings) {
 
+
+
+            for(auto roof:roof_rings) {
                 outfile << "                  " << delim3 << "[";
                 std::string comma3=" ";
 
@@ -296,28 +301,28 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
                 outfile << "]\n ";
 
             }
-            outfile<<"]";
+            outfile<<"]]";
 
             outfile << "               ],\n";
             outfile << "              \"semantics\": {\n";
             outfile << "                \"surfaces\": [\n";
             outfile << "                            {\n";
-            outfile << "              \"type\": \"GroundSurface\"\n";
+            outfile << "                    \"type\": \"GroundSurface\"\n";
             outfile << "                            },\n";
             outfile << "                            {\n";
-            outfile << "              \"type\": \"WallSurface\"\n";
+            outfile << "                    \"type\": \"WallSurface\"\n";
             outfile << "                            },\n";
             outfile << "                            {\n";
-            outfile << "              \"type\": \"RoofSurface\"\n";
+            outfile << "                    \"type\": \"RoofSurface\"\n";
             outfile << "                            }\n";
             outfile << "                ]," << "\n";
-            outfile << "              \"values\": [0, ";
+            outfile << "                \"values\": [[0, ";
             comma = "";
             for (auto &n: walls) {
                 outfile << comma << 1;
                 comma = ", ";
             }
-            outfile << ", 2] \n";
+            outfile << ", 2]] \n";
             outfile << "                }" << "\n";
 
             outfile << "          }]\n";
