@@ -347,15 +347,52 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
 
 }
 
+void polytopoint(const std::string json_in, const std::string file_out){
+    std::vector<Point> vertices;
+    std::ifstream infile(json_in, std::ios::in);
+    if(!infile){
+        std::cerr<<"Input file not found\n";
+        return;
+    }
+    json j; infile>>j;
+    auto features = j["features"];
+    for(auto &all: features){
+        auto geom = all["geometry"]["coordinates"];
+        for(auto &xyz: geom){
+            for(const auto &p: xyz){
+                Point pt = Point(p[0],p[1],p[2]);
+                vertices.push_back(pt);
+            }
+        }
+    }
+    std::cout<<vertices.size();
+    std::ofstream outfile(file_out, std::ofstream::out);
+    outfile << "ply" << std::endl;
+    outfile << "format ascii 1.0" << std::endl;
+    outfile << "element vertex" << " " << vertices.size() <<std::endl;
+    outfile << "property float x" << std::endl;
+    outfile << "property float y" << std::endl;
+    outfile << "property float z" << std::endl;
+    outfile << "end_header" << std::endl;
+    for (const auto &e : vertices){
+        outfile <<std::setprecision(10)<< e.x << " " << e.y << " " << e.z <<  "\n";
+    }
+    outfile.close();
+
+
+}
+
 int main(int argc, const char * argv[]) {
     const char *file_in = "C:\\Users\\theoj\\Desktop\\TIN\\LAS.obj";
     const char *file_out = "C:\\Users\\theoj\\Desktop\\TIN\\Tin.json";
     std::string json_out = "../buildings.json";
     std::string json_path = JSON_ELEV_PATH;
+    std::string pc_out = "../pc.ply";
     fs::path working_dir = fs::path(json_path).parent_path();
     fs::current_path(working_dir);
+    polytopoint(json_path,pc_out);
     //importOBJ(file_in);
-    importGeoJSON(json_path, json_out);
+    //importGeoJSON(json_path, json_out);
     //exportCityJSON(file_out);
     return 0;
 }
