@@ -10,7 +10,7 @@ set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
-  "JSON_ELEV_PATH=\"/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/3d_joined2.json\""
+  "JSON_ELEV_PATH=\"/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/3d_one.json\""
   )
 
 # The include file search paths:

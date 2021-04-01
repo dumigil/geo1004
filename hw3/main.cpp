@@ -9,6 +9,7 @@
 #include "Points.h"
 #include <algorithm>
 #include <filesystem>
+#include <any>
 namespace fs = std::filesystem;
 #include "json.hpp"
 using json = nlohmann::json;
@@ -122,6 +123,11 @@ std::ostream& operator<<(std::ostream& os, const Point2d& p) {
 
 void importGeoJSON(const std::string json_in, const std::string json_out){
     std::vector<Point> vertices;
+    json data;
+    data["type"]= "CityJSON";
+    data["version"]="1.0";
+    data["metadata"]["referenceSystem"]="urn:ogc:def:crs:EPSG::7415";
+
     int i=0;
     int k=1;
     int ii=0;
@@ -144,6 +150,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
     json j;infile >>j;
     auto features = j["features"];
     for(auto &all: features){
+        data["CityObjects"];
         std::vector<int> base;
         std::vector<int> roof;
         std::vector<std::vector<int>> walls;
@@ -344,10 +351,127 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
     outfile<<"}\n";
     outfile.close();
     //std::cout<<features<<std::endl;
+}
+
+void json2json(std::string in, std::string out) {
+    std::vector<std::vector<double>> vertices;
+    json data;
+    data["type"] = "CityJSON";
+    data["version"] = "1.0";
+    data["metadata"]["referenceSystem"] = "urn:ogc:def:crs:EPSG::7415";
+    std::string idx;
+
+    int i = 0;
+    int k = 1;
+    int ii = 0;
+    int kk = 1;
+    std::ifstream infile(in, std::ios::in);
+    std::ofstream outfile(out, std::ios::out);
+    std::string delim2 = "";
+
+    if (!infile) {
+        std::cerr << "Input file not found\n";
+        return;
+    }
+    json j;
+    infile >> j;
+    auto features = j["features"];
+    for (auto &all: features) {
+        std::vector<int> base;
+        std::vector<int> roof;
+        std::vector<std::vector<int>> walls;
+        std::vector<std::vector<int>> base_rings;
+        std::vector<std::vector<int>> roof_rings;
+
+        auto geom = all["geometry"]["coordinates"];
+        float height = all["properties"]["_elevation_max"];
+        auto id = all["properties"]["identificatie"];
+        auto year = all["properties"]["bouwjaar"];
+        auto storeys = ceil(height / 3);
+        idx = id;
+        data["CityObjects"][idx];
+        data["CityObjects"][idx]["type"]="Building";
+        data["CityObjects"][idx]["attributes"];
+        data["CityObjects"][idx]["attributes"]["yearOfConstruction"]=year;
+        data["CityObjects"][idx]["attributes"]["measuredHeight"]=height;
+        data["CityObjects"][idx]["attributes"]["storeysAboveGround"]=storeys;
+
+        std::vector<std::vector<Point>> rings;
+        for (auto &xy: geom) {
+            std::vector<Point> base_ring;
+            for (const auto &p: xy) {
+
+                if (height != 0) {
+                    Point p_base = Point(p[0], p[1], p[2]);
+                    base_ring.push_back(p_base);
+                }
+            }
+            rings.push_back(base_ring);
+        }
+        for (auto ring: rings) {
+            std::vector<int> base_ring;
+            std::vector<int> roof_ring;
+            for (auto point: ring) {
+                std::vector<double> base_vert;
+
+                Point pt_base = Point(point.x, point.y, point.z);
+                base_ring.push_back(ii);
+                ii += 2;
+                base_vert.push_back(point.x);
+                base_vert.push_back(point.y);
+                base_vert.push_back(point.z);
+                vertices.push_back(base_vert);
+
+                std::vector<double> roof_vert;
+
+                Point pt_roof = Point(point.x, point.y, height);
+                roof_ring.push_back(kk);
+                kk += 2;
+                roof_vert.push_back(point.x);
+                roof_vert.push_back(point.y);
+                roof_vert.push_back(point.z);
+                vertices.push_back(roof_vert);
+            }
+
+            base_rings.push_back(base_ring);
+            roof_rings.push_back(roof_ring);
+        }
+        if(!base_rings.empty()){
+            for(int a=0; a<base_rings.size();a++){
+                for(int x=1; x<base_rings[a].size();x++){
+                    std::vector<int> wall;
+                    wall.push_back(base_rings[a][x-1]);
+                    wall.push_back(base_rings[a][x]);
+                    wall.push_back(roof_rings[a][x]);
+                    wall.push_back(roof_rings[a][x-1]);
+                    walls.push_back(wall);
+                }
+            }
+        }
+        std::list<std::vector<std::vector<int>>> geometry = {base_rings, walls, roof_rings};
+        std::map<std::string, std::any> geoms = {{"type", "Solid"},{"lod", "1.2"},{"boundaries", geometry}};
+        //json j_map(geoms);
+
+        data["CityObjects"][idx]["attributes"]["geometry"]["boundaries"]=geometry;
+        data["CityObjects"][idx]["attributes"]["geometry"]["lod"]="1.2";
+        data["CityObjects"][idx]["attributes"]["geometry"]["type"]="Solid";
+
+    }
+
+
+
+
+
+
+    json j_vec(vertices);
+    data["vertices"]=vertices;
+    outfile <<std::setw(4)<< data<<std::endl;
 
 }
 
-void polytopoint(const std::string json_in, const std::string file_out){
+
+
+void polytoply(const std::string json_in, const std::string file_out){
     std::vector<Point> vertices;
     std::ifstream infile(json_in, std::ios::in);
     if(!infile){
@@ -365,7 +489,6 @@ void polytopoint(const std::string json_in, const std::string file_out){
             }
         }
     }
-    std::cout<<vertices.size();
     std::ofstream outfile(file_out, std::ofstream::out);
     outfile << "ply" << std::endl;
     outfile << "format ascii 1.0" << std::endl;
@@ -381,16 +504,46 @@ void polytopoint(const std::string json_in, const std::string file_out){
 
 
 }
+void polytoobj(const std::string json_in, const std::string file_out){
+    std::vector<Point> vertices;
+    std::ifstream infile(json_in, std::ios::in);
+    if(!infile){
+        std::cerr<<"Input file not found\n";
+        return;
+    }
+    json j; infile>>j;
+    auto features = j["features"];
+    for(auto &all: features){
+        auto geom = all["geometry"]["coordinates"];
+        for(auto &xyz: geom){
+            for(const auto &p: xyz){
+                Point pt = Point(p[0],p[1],p[2]);
+                vertices.push_back(pt);
+            }
+        }
+    }
+    std::ofstream outfile(file_out, std::ofstream::out);
+    outfile <<"x, y, z\n";
+    for (const auto &e : vertices){
+        outfile <<std::setprecision(10)<< e.x << ", " << e.y << ", " << e.z <<  "\n";
+    }
+    outfile.close();
+
+
+}
 
 int main(int argc, const char * argv[]) {
-    const char *file_in = "C:\\Users\\theoj\\Desktop\\TIN\\LAS.obj";
-    const char *file_out = "C:\\Users\\theoj\\Desktop\\TIN\\Tin.json";
+    const char *file_in = "../obj_combined.obj";
+    const char *file_out = "../terrain.json";
     std::string json_out = "../buildings.json";
     std::string json_path = JSON_ELEV_PATH;
-    std::string pc_out = "../pc.ply";
+    std::string pc_ply = "../pc.ply";
+    std::string pc_obj = "../pc.csv";
     fs::path working_dir = fs::path(json_path).parent_path();
     fs::current_path(working_dir);
-    polytopoint(json_path,pc_out);
+    //polytoply(json_path,pc_ply);
+    //polytoobj(json_path,pc_obj);
+    json2json(json_path,json_out);
     //importOBJ(file_in);
     //importGeoJSON(json_path, json_out);
     //exportCityJSON(file_out);
