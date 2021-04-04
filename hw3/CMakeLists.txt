@@ -3,7 +3,7 @@ project(TIN)
 set(CMAKE_CXX_STANDARD 17)
 
 add_definitions(
-        -DJSON_ELEV_PATH=\"${PROJECT_SOURCE_DIR}/3d_one.json\"
+        -DJSON_ELEV_PATH=\"${PROJECT_SOURCE_DIR}/3d_joined2.json\"
 )
 add_executable(TIN
         main.cpp)

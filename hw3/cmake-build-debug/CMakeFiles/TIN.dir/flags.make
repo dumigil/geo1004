@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk   -std=gnu++17
 
-CXX_DEFINES = -DJSON_ELEV_PATH=\"/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/3d_one.json\"
+CXX_DEFINES = -DJSON_ELEV_PATH=\"/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/hw3/3d_joined2.json\"
 
 CXX_INCLUDES = 
 

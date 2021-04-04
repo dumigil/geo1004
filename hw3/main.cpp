@@ -165,6 +165,20 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         std::vector<std::vector<Point>> rings;
         for(auto &xy: geom){
             std::vector<Point> base_ring;
+            for(int it =0;it<xy.size()-1;it++){
+                if(height!= 0){
+                    Point p_base = Point(xy[it][0],xy[it][1],xy[it][2]);
+                    base_ring.push_back(p_base);
+                }
+            }
+            rings.push_back(base_ring);
+        }
+
+
+
+        /*
+        for(auto &xy: geom){
+            std::vector<Point> base_ring;
             for(const auto &p: xy){
 
                 if(height != 0){
@@ -174,6 +188,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             }
             rings.push_back(base_ring);
         }
+        */
         for(auto ring: rings){
             std::vector<int> base_ring;
             std::vector<int> roof_ring;
@@ -211,13 +226,23 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
          */
         if(!base_rings.empty()){
             for(int a=0; a<base_rings.size();a++){
-                for(int x=1; x<base_rings[a].size();x++){
-                    std::vector<int> wall;
-                    wall.push_back(base_rings[a][x-1]);
-                    wall.push_back(base_rings[a][x]);
-                    wall.push_back(roof_rings[a][x]);
-                    wall.push_back(roof_rings[a][x-1]);
-                    walls.push_back(wall);
+                for(int x=0; x<base_rings[a].size();x++){
+                    if(base_rings[a].back()!=base_rings[a][x]) {
+                        std::vector<int> wall;
+                        wall.push_back(base_rings[a][x]);
+                        wall.push_back(base_rings[a][x+1]);
+                        wall.push_back(roof_rings[a][x+1]);
+                        wall.push_back(roof_rings[a][x]);
+                        walls.push_back(wall);
+                    }
+                    else{
+                        std::vector<int> wall;
+                        wall.push_back(base_rings[a][x]);
+                        wall.push_back(base_rings[a][0]);
+                        wall.push_back(roof_rings[a][0]);
+                        wall.push_back(roof_rings[a][x]);
+                        walls.push_back(wall);
+                    }
                 }
             }
         }
@@ -356,9 +381,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
 void json2json(std::string in, std::string out) {
     std::vector<std::vector<double>> vertices;
     json data;
-    data["type"] = "CityJSON";
-    data["version"] = "1.0";
-    data["metadata"]["referenceSystem"] = "urn:ogc:def:crs:EPSG::7415";
+
     std::string idx;
 
     int i = 0;
@@ -379,7 +402,6 @@ void json2json(std::string in, std::string out) {
     for (auto &all: features) {
         std::vector<int> base;
         std::vector<int> roof;
-        std::vector<std::vector<int>> walls;
         std::vector<std::vector<int>> base_rings;
         std::vector<std::vector<int>> roof_rings;
 
@@ -389,12 +411,8 @@ void json2json(std::string in, std::string out) {
         auto year = all["properties"]["bouwjaar"];
         auto storeys = ceil(height / 3);
         idx = id;
-        data["CityObjects"][idx];
-        data["CityObjects"][idx]["type"]="Building";
-        data["CityObjects"][idx]["attributes"];
-        data["CityObjects"][idx]["attributes"]["yearOfConstruction"]=year;
-        data["CityObjects"][idx]["attributes"]["measuredHeight"]=height;
-        data["CityObjects"][idx]["attributes"]["storeysAboveGround"]=storeys;
+
+        std::list<std::vector<std::vector<int>>> geometry;
 
         std::vector<std::vector<Point>> rings;
         for (auto &xy: geom) {
@@ -435,26 +453,43 @@ void json2json(std::string in, std::string out) {
 
             base_rings.push_back(base_ring);
             roof_rings.push_back(roof_ring);
+            geometry.push_back(base_rings);
+            geometry.push_back(roof_rings);
         }
+
         if(!base_rings.empty()){
             for(int a=0; a<base_rings.size();a++){
+
                 for(int x=1; x<base_rings[a].size();x++){
                     std::vector<int> wall;
+                    std::vector<std::vector<int>> walls;
+
                     wall.push_back(base_rings[a][x-1]);
                     wall.push_back(base_rings[a][x]);
                     wall.push_back(roof_rings[a][x]);
                     wall.push_back(roof_rings[a][x-1]);
                     walls.push_back(wall);
+                    geometry.push_back(walls);
+
+
                 }
             }
         }
-        std::list<std::vector<std::vector<int>>> geometry = {base_rings, walls, roof_rings};
         std::map<std::string, std::any> geoms = {{"type", "Solid"},{"lod", "1.2"},{"boundaries", geometry}};
-        //json j_map(geoms);
+        data["CityObjects"][idx]["geometry"]["lod"]="1.2";
+        data["CityObjects"][idx]["geometry"]["type"]="Solid";
+        json j_vec(geometry);
+        data["CityObjects"][idx]["geometry"]["boundaries"]=geometry;
 
-        data["CityObjects"][idx]["attributes"]["geometry"]["boundaries"]=geometry;
-        data["CityObjects"][idx]["attributes"]["geometry"]["lod"]="1.2";
-        data["CityObjects"][idx]["attributes"]["geometry"]["type"]="Solid";
+        data["CityObjects"][idx]["attributes"]["yearOfConstruction"]=year;
+        data["CityObjects"][idx]["attributes"]["measuredHeight"]=height;
+        data["CityObjects"][idx]["attributes"]["storeysAboveGround"]=storeys;
+
+
+        data["type"] = "CityJSON";
+        data["version"] = "1.0";
+        data["metadata"]["referenceSystem"] = "urn:ogc:def:crs:EPSG::7415";
+        data["CityObjects"][idx]["type"]="Building";
 
     }
 
@@ -504,7 +539,7 @@ void polytoply(const std::string json_in, const std::string file_out){
 
 
 }
-void polytoobj(const std::string json_in, const std::string file_out){
+void polytocsv(const std::string json_in, const std::string file_out){
     std::vector<Point> vertices;
     std::ifstream infile(json_in, std::ios::in);
     if(!infile){
@@ -522,30 +557,27 @@ void polytoobj(const std::string json_in, const std::string file_out){
             }
         }
     }
-    std::ofstream outfile(file_out, std::ofstream::out);
-    outfile <<"x, y, z\n";
+    std::ofstream outfile(file_out, std::ofstream::app);
     for (const auto &e : vertices){
         outfile <<std::setprecision(10)<< e.x << ", " << e.y << ", " << e.z <<  "\n";
     }
     outfile.close();
-
-
 }
 
 int main(int argc, const char * argv[]) {
-    const char *file_in = "../obj_combined.obj";
+    const char *file_in = "../obj_total.obj";
     const char *file_out = "../terrain.json";
     std::string json_out = "../buildings.json";
     std::string json_path = JSON_ELEV_PATH;
     std::string pc_ply = "../pc.ply";
-    std::string pc_obj = "../pc.csv";
+    std::string pc_obj = "../LAS00.csv";
     fs::path working_dir = fs::path(json_path).parent_path();
     fs::current_path(working_dir);
     //polytoply(json_path,pc_ply);
-    //polytoobj(json_path,pc_obj);
-    json2json(json_path,json_out);
+    //polytocsv(json_path,pc_obj);
+    //json2json(json_path,json_out);
     //importOBJ(file_in);
-    //importGeoJSON(json_path, json_out);
+    importGeoJSON(json_path, json_out);
     //exportCityJSON(file_out);
     return 0;
 }
