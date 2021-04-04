@@ -42,6 +42,8 @@
 *.csv
 *.obj
 *.ply
+*.json
+
 
 
 
