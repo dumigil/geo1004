@@ -8,45 +8,45 @@
 		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\CGAL\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.75.0\;CMake Files\..\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.75.0\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="trees">
-				<Option output="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/trees" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+				<Option output="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/trees" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DCGAL_USE_GMPXX=1"/>
 					<Add option="-DBOOST_ALL_NO_LIB"/>
-					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/."/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
@@ -56,22 +56,22 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 trees"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 trees"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="trees/fast">
-				<Option output="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/trees" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+				<Option output="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/trees" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DCGAL_USE_GMPXX=1"/>
 					<Add option="-DBOOST_ALL_NO_LIB"/>
-					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug"/>
+					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release"/>
 					<Add directory="/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/."/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
@@ -81,10 +81,10 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 trees/fast"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 trees/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/michieldejong/Documents/GEOMATICS/GEO1004/assignment_repo/trees/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>

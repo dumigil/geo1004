@@ -15,8 +15,17 @@
 #include "KDTree/kdtree.h"
 #define CONVHULL_3D_ENABLE
 #include "convhull_3d/convhull_3d.h"
+#include <CGAL/convex_hull_3.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Surface_mesh.h>
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 
-
+typedef CGAL::Exact_predicates_exact_constructions_kernel K;
+typedef CGAL::Polyhedron_3<K> Polyhedron_3;
+typedef K::Point_3 Point_3;
+typedef K::Segment_3 Segment_3;
+typedef K::Triangle_3 Triangle_3;
+typedef CGAL::Surface_mesh<Point_3> Surface_Mesh;
 
 std::vector<Point> _input_points;
 
@@ -197,18 +206,47 @@ void ClusterTrees(std::vector<Point> & _input_points) {
             _input_points[id].segment_id=1;
 
             if (tree.size()>10){
-                std::cout<<tree.size()<<std::endl;
+                //std::cout<<tree.size()<<std::endl;
                 Trees.push_back(tree);}
         }
         ++id;
     }
-    std::cout<<"NUMBER OF TREES "<<Trees.size();
+    //std::cout<<"NUMBER OF TREES "<<Trees.size();
 }
+
+void convexHull(std::vector<std::vector<Point>> pointList){
+    std::vector<std::vector<Point_3>> cgalTrees;
+    std::vector<Polyhedron_3> polyTrees;
+    for(const auto &all: pointList){
+        std::vector<Point_3> cgalTree;
+        for(const auto &p: all){
+            Point_3 pt=Point_3(p.x, p.y, p.z);
+            cgalTree.push_back(pt);
+        }
+        cgalTrees.push_back(cgalTree);
+    }
+    for(const auto &tree: cgalTrees){
+        Polyhedron_3 poly;
+        CGAL::convex_hull_3(tree.begin(), tree.end(),poly);
+        //std::cout << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
+        Surface_Mesh sm;
+        CGAL::convex_hull_3(tree.begin(), tree.end(),sm);
+        std::cout << "The convex hull contains " << num_vertices(sm) << " vertices" << std::endl;
+
+    }
+
+
+}
+
+
+
+
 int main(int argc, const char * argv[]) {
     const char *file_in = "../PointCloudFilter_Vegetation.xyz";
 //    const char *file_out = "/Trees.json";
 //    read_ply(file_in);
     read_xyz(file_in);
     ClusterTrees(_input_points);
+    convexHull(Trees);
     return 0;
 }
