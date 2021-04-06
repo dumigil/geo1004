@@ -6,6 +6,7 @@ find_package(CGAL REQUIRED)
 include(${CGAL_USE_FILE})
 include_directories(.)
 
+
 add_executable(trees
         Points.h
         trees.cpp)

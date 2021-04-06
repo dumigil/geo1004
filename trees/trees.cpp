@@ -20,12 +20,18 @@
 #include <CGAL/Surface_mesh.h>
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 
-typedef CGAL::Exact_predicates_exact_constructions_kernel K;
-typedef CGAL::Polyhedron_3<K> Polyhedron_3;
-typedef K::Point_3 Point_3;
-typedef K::Segment_3 Segment_3;
-typedef K::Triangle_3 Triangle_3;
-typedef CGAL::Surface_mesh<Point_3> Surface_Mesh;
+
+
+
+typedef CGAL::Exact_predicates_exact_constructions_kernel   K;
+typedef CGAL::Polyhedron_3<K>                               Polyhedron_3;
+typedef K::Point_3                                          Point_3;
+typedef K::Segment_3                                        Segment_3;
+typedef K::Triangle_3                                       Triangle_3;
+typedef CGAL::Surface_mesh<Point_3>                         Surface_Mesh;
+typedef Polyhedron_3::Facet_iterator                        Facet_iterator;
+typedef Polyhedron_3::Halfedge_around_facet_circulator      Halfedge_facet_circulator;
+typedef Polyhedron_3::Vertex_iterator                       Vertex_iterator;
 
 std::vector<Point> _input_points;
 
@@ -214,7 +220,9 @@ void ClusterTrees(std::vector<Point> & _input_points) {
     //std::cout<<"NUMBER OF TREES "<<Trees.size();
 }
 
-void convexHull(std::vector<std::vector<Point>> pointList){
+void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
+    std::ofstream outfile(out, std::ios::out);
+    std::vector<Point_3> _vertices;
     std::vector<std::vector<Point_3>> cgalTrees;
     std::vector<Polyhedron_3> polyTrees;
     for(const auto &all: pointList){
@@ -225,15 +233,62 @@ void convexHull(std::vector<std::vector<Point>> pointList){
         }
         cgalTrees.push_back(cgalTree);
     }
+    std::vector<Polyhedron_3 > smTrees;
+    std::vector<std::vector<std::vector<int>>> treeColl;
+    int ct = 1;
     for(const auto &tree: cgalTrees){
+        std::vector<std::vector<int>> intTrees;
+
         Polyhedron_3 poly;
         CGAL::convex_hull_3(tree.begin(), tree.end(),poly);
         //std::cout << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
         Surface_Mesh sm;
         CGAL::convex_hull_3(tree.begin(), tree.end(),sm);
-        std::cout << "The convex hull contains " << num_vertices(sm) << " vertices" << std::endl;
+        smTrees.push_back(poly);
+
+        //std::cout<<std::endl;
+
+
+        for(Facet_iterator i = poly.facets_begin();i!=poly.facets_end();i++){
+            std::vector<int> idx;
+
+            Halfedge_facet_circulator j = i->facet_begin();
+            CGAL_assertion(CGAL::circulator_size(j) >=3);
+            //std::cout<< CGAL::circulator_size(j)<<" ";
+            do{
+                //std::cout<<" "<<std::distance(poly.vertices_begin(), j->vertex());
+                int idxc = std::distance(poly.vertices_begin(), j->vertex());
+                idx.push_back(idxc +ct);
+            }while(++j != i->facet_begin());
+            intTrees.push_back(idx);
+        }
+        treeColl.push_back(intTrees);
+        for(Vertex_iterator v = poly.vertices_begin();v!=poly.vertices_end();++v){
+            //std::cout<<v->point()<<" ";
+            //Point p = Point(v->point().x().get_relative_precision_of_to_double(),v->point().y().get_relative_precision_of_to_double(),v->point().z().get_relative_precision_of_to_double());
+            _vertices.push_back(v->point());
+            ct++;
+        }
 
     }
+    int ctr = 0;
+    for(const auto &all: _vertices){
+        outfile <<"v "<< all.x()<<" "<<all.y()<<" "<<all.z()<<"\n";
+    }
+    for(const auto &a: treeColl){
+        outfile<<"o "<<ctr<<std::endl;
+        for(const auto &b: a){
+            outfile<<"f ";
+            for(const auto &c : b){
+                outfile << c<<" ";
+            }
+            outfile<<std::endl;
+        }
+        ctr++;
+    }
+
+
+
 
 
 }
@@ -243,10 +298,10 @@ void convexHull(std::vector<std::vector<Point>> pointList){
 
 int main(int argc, const char * argv[]) {
     const char *file_in = "../PointCloudFilter_Vegetation.xyz";
-//    const char *file_out = "/Trees.json";
+    std::string file_out = "../Trees.obj";
 //    read_ply(file_in);
     read_xyz(file_in);
     ClusterTrees(_input_points);
-    convexHull(Trees);
+    convexHull(Trees, file_out);
     return 0;
 }
