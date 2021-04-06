@@ -40,7 +40,6 @@
 /hw2/.idea/
 /hw1/*.zip
 *.csv
-*.obj
 *.ply
 *.json
 

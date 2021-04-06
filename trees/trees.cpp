@@ -211,7 +211,7 @@ void ClusterTrees(std::vector<Point> & _input_points) {
             }
             _input_points[id].segment_id=1;
 
-            if (tree.size()>10){
+            if (tree.size()>20){
                 //std::cout<<tree.size()<<std::endl;
                 Trees.push_back(tree);}
         }
