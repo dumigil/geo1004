@@ -238,39 +238,73 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
     int ct = 1;
     for(const auto &tree: cgalTrees){
         std::vector<std::vector<int>> intTrees;
-
+        std::vector<Point_3 > pts;
         Polyhedron_3 poly;
         CGAL::convex_hull_3(tree.begin(), tree.end(),poly);
+        Polyhedron_3 poly_new;
+
+        CGAL::convex_hull_3(pts.begin(), pts.end(),poly_new);
         //std::cout << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
-        Surface_Mesh sm;
-        CGAL::convex_hull_3(tree.begin(), tree.end(),sm);
-        smTrees.push_back(poly);
-
-        //std::cout<<std::endl;
+        for(Vertex_iterator v = poly.vertices_begin();v!=poly.vertices_end();++v){
+            pts.push_back(v->point());
+        }
 
 
-        for(Facet_iterator i = poly.facets_begin();i!=poly.facets_end();i++){
+        Point_3 center = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+            return a.z() < b.z();
+        });
+        Point_3 min_y = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+            return a.y() < b.y();
+        });
+        Point_3 max_y = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+            return a.y() > b.y();
+        });
+        auto diam = max_y.y()-min_y.y();
+        auto trunk = diam/3;
+        auto ground = 0;
+        //roof points
+        Point_3 p1((center.x()+(trunk/2)),center.y()+(trunk/2),center.z());
+
+        Point_3 p2((center.x()+(trunk/2)),center.y()-(trunk/2),center.z());
+        Point_3 p3((center.x()-(trunk/2)),center.y()+(trunk/2),center.z());
+        Point_3 p4((center.x()-(trunk/2)),center.y()-(trunk/2),center.z());
+
+        Point_3 p1_g((center.x()+(trunk/2)),center.y()+(trunk/2),ground);
+        Point_3 p2_g((center.x()+(trunk/2)),center.y()-(trunk/2),ground);
+        Point_3 p3_g((center.x()-(trunk/2)),center.y()+(trunk/2),ground);
+        Point_3 p4_g((center.x()-(trunk/2)),center.y()-(trunk/2),ground);
+        pts.push_back(p1);
+        pts.push_back(p2);
+        pts.push_back(p3);
+        pts.push_back(p4);
+
+        pts.push_back(p1_g);
+        pts.push_back(p2_g);
+        pts.push_back(p3_g);
+        pts.push_back(p4_g);
+
+        smTrees.push_back(poly_new);
+
+
+        for(Facet_iterator i = poly_new.facets_begin();i!=poly_new.facets_end();i++){
             std::vector<int> idx;
-
             Halfedge_facet_circulator j = i->facet_begin();
             CGAL_assertion(CGAL::circulator_size(j) >=3);
-            //std::cout<< CGAL::circulator_size(j)<<" ";
             do{
-                //std::cout<<" "<<std::distance(poly.vertices_begin(), j->vertex());
-                int idxc = std::distance(poly.vertices_begin(), j->vertex());
+                int idxc = std::distance(poly_new.vertices_begin(), j->vertex());
                 idx.push_back(idxc +ct);
             }while(++j != i->facet_begin());
             intTrees.push_back(idx);
         }
         treeColl.push_back(intTrees);
-        for(Vertex_iterator v = poly.vertices_begin();v!=poly.vertices_end();++v){
-            //std::cout<<v->point()<<" ";
-            //Point p = Point(v->point().x().get_relative_precision_of_to_double(),v->point().y().get_relative_precision_of_to_double(),v->point().z().get_relative_precision_of_to_double());
+        for(Vertex_iterator v = poly_new.vertices_begin();v!=poly_new.vertices_end();++v){
             _vertices.push_back(v->point());
             ct++;
         }
 
     }
+
+
     int ctr = 0;
     for(const auto &all: _vertices){
         outfile <<"v "<< all.x()<<" "<<all.y()<<" "<<all.z()<<"\n";
@@ -286,11 +320,6 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
         }
         ctr++;
     }
-
-
-
-
-
 }
 
 
