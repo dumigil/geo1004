@@ -19,7 +19,9 @@
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Surface_mesh.h>
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
-
+#include <boost/uuid/uuid.hpp>            // uuid class
+#include <boost/uuid/uuid_generators.hpp> // generators
+#include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 
 
@@ -211,7 +213,7 @@ void ClusterTrees(std::vector<Point> & _input_points) {
             }
             _input_points[id].segment_id=1;
 
-            if (tree.size()>20){
+            if (tree.size()>12){
                 //std::cout<<tree.size()<<std::endl;
                 Trees.push_back(tree);}
         }
@@ -235,22 +237,30 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
     }
     std::vector<Polyhedron_3 > smTrees;
     std::vector<std::vector<std::vector<int>>> treeColl;
-    int ct = 1;
+    int ct = 0;
+    std::string delim2="";
+    outfile<<"{\n";
+    outfile<<"  \"type\": \"CityJSON\",\n";
+    outfile<<"  \"version\": \"1.0\",\n";
+    outfile<<"  \"metadata\": {\n";
+    outfile<<"      \"referenceSystem\": \"urn:ogc:def:crs:EPSG::7415\"\n";
+    outfile<<"                },\n";
+    outfile<<"  \"CityObjects\": {\n";
+
+
     for(const auto &tree: cgalTrees){
         std::vector<std::vector<int>> intTrees;
         std::vector<Point_3 > pts;
         Polyhedron_3 poly;
         CGAL::convex_hull_3(tree.begin(), tree.end(),poly);
-        Polyhedron_3 poly_new;
 
-        CGAL::convex_hull_3(pts.begin(), pts.end(),poly_new);
         //std::cout << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
         for(Vertex_iterator v = poly.vertices_begin();v!=poly.vertices_end();++v){
             pts.push_back(v->point());
         }
 
 
-        Point_3 center = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+        Point_3 centerz = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
             return a.z() < b.z();
         });
         Point_3 min_y = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
@@ -259,30 +269,24 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
         Point_3 max_y = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
             return a.y() > b.y();
         });
-        auto diam = max_y.y()-min_y.y();
-        auto trunk = diam/3;
+        Point_3 min_x = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+            return a.x() < b.x();
+        });
+        Point_3 max_x = *std::min_element(pts.begin(), pts.end(), [](const Point_3 &a, const Point_3 &b){
+            return a.x() > b.x();
+        });
+        auto centerx = (min_x.x() + max_x.x()) /2;
+        auto centery = (min_y.y() + max_y.y()) /2;
+        Point_3 center(centerx, centery, centerz.z());
+        auto diam_y = max_y.y()-min_y.y();
+        auto diam_x = max_x.x()-min_x.x();
+        auto diam = (diam_x + diam_y )/2;
+        auto trunk = diam/8;
         auto ground = 0;
-        //roof points
-        Point_3 p1((center.x()+(trunk/2)),center.y()+(trunk/2),center.z());
 
-        Point_3 p2((center.x()+(trunk/2)),center.y()-(trunk/2),center.z());
-        Point_3 p3((center.x()-(trunk/2)),center.y()+(trunk/2),center.z());
-        Point_3 p4((center.x()-(trunk/2)),center.y()-(trunk/2),center.z());
 
-        Point_3 p1_g((center.x()+(trunk/2)),center.y()+(trunk/2),ground);
-        Point_3 p2_g((center.x()+(trunk/2)),center.y()-(trunk/2),ground);
-        Point_3 p3_g((center.x()-(trunk/2)),center.y()+(trunk/2),ground);
-        Point_3 p4_g((center.x()-(trunk/2)),center.y()-(trunk/2),ground);
-        pts.push_back(p1);
-        pts.push_back(p2);
-        pts.push_back(p3);
-        pts.push_back(p4);
-
-        pts.push_back(p1_g);
-        pts.push_back(p2_g);
-        pts.push_back(p3_g);
-        pts.push_back(p4_g);
-
+        Polyhedron_3 poly_new;
+        CGAL::convex_hull_3(pts.begin(), pts.end(),poly_new);
         smTrees.push_back(poly_new);
 
 
@@ -301,9 +305,92 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
             _vertices.push_back(v->point());
             ct++;
         }
+        Point_3 p1((center.x()+(trunk/2)),center.y()+(trunk/2),center.z());
+        Point_3 p2((center.x()+(trunk/2)),center.y()-(trunk/2),center.z());
+        Point_3 p3((center.x()-(trunk/2)),center.y()-(trunk/2),center.z());
+        Point_3 p4((center.x()-(trunk/2)),center.y()+(trunk/2),center.z());
 
+        Point_3 p5((center.x()+(trunk/2)),center.y()+(trunk/2),ground);
+        Point_3 p6((center.x()+(trunk/2)),center.y()-(trunk/2),ground);
+        Point_3 p7((center.x()-(trunk/2)),center.y()-(trunk/2),ground);
+        Point_3 p8((center.x()-(trunk/2)),center.y()+(trunk/2),ground);
+        ct--;
+        std::vector<int> f1 = {1+ct, 2+ct, 3+ct, 4+ct};
+        std::vector<int> f2 = {1+ct, 4+ct, 8+ct, 5+ct};
+        std::vector<int> f3 = {1+ct, 5+ct, 6+ct, 2+ct};
+        std::vector<int> f4 = {3+ct, 2+ct, 6+ct, 7+ct};
+        std::vector<int> f5 = {4+ct, 3+ct, 7+ct, 8+ct};
+        std::vector<int> f6 = {5+ct, 8+ct, 7+ct, 6+ct};
+        intTrees.push_back(f1);
+        intTrees.push_back(f2);
+        intTrees.push_back(f3);
+        intTrees.push_back(f4);
+        intTrees.push_back(f5);
+        intTrees.push_back(f6);
+
+        _vertices.push_back(p1);
+        _vertices.push_back(p2);
+        _vertices.push_back(p3);
+        _vertices.push_back(p4);
+        _vertices.push_back(p5);
+        _vertices.push_back(p6);
+        _vertices.push_back(p7);
+        _vertices.push_back(p8);
+        ct+=9;
+
+
+
+
+
+
+        boost::uuids::uuid uuid = boost::uuids::random_generator()();
+
+        outfile << "      " << delim2 <<"\""<< uuid <<"\""<< ": {\n";
+        outfile << "          \"type\": \"SolitaryVegetationObject\",\n";
+        outfile << "          \"attributes\": {\n";
+        outfile << "              \"trunkDiameter\": " << diam << " ,\n";
+        outfile << "              \"crownDiameter\": " << trunk << " \n";
+        outfile << "          },\n";
+        outfile << "          \"geometry\": [{\n";
+        outfile << "              \"type\": \"MultiSurface\",\n";
+        outfile << "              \"lod\": 1,\n";
+        outfile << "              \"boundaries\": [\n";
+        std::string delim;
+        std::string comma;
+        std::string delim3=" ";
+
+        for(auto tree:intTrees) {
+            outfile << "                  " << delim3 << "[[";
+            std::string comma3=" ";
+
+            for (auto &v: tree) {
+                outfile << comma3 << v;
+                comma3 = ", ";
+            }
+            outfile << "]]\n ";
+            delim3=", ";
+
+        }
+        outfile << "               ]\n";
+        outfile << "          }]\n";
+
+        outfile << "          }"<<"\n";
+        delim2=",";
     }
 
+
+    outfile<<"  },\n";
+    outfile<<"  \"vertices\": [\n";
+    std::string delim4;
+    delim4="";
+    for(auto &e: _vertices){
+        outfile<<std::setprecision(6)<<"    "<<delim4<<"[ "<<e.x()<<", "<<e.y()<<", "<<e.z()<<"]\n";
+        delim4=",";
+    }
+    outfile<<"  ]\n";
+    outfile<<"}\n";
+    outfile.close();
+/*
 
     int ctr = 0;
     for(const auto &all: _vertices){
@@ -320,6 +407,7 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
         }
         ctr++;
     }
+*/
 }
 
 
@@ -327,7 +415,7 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
 
 int main(int argc, const char * argv[]) {
     const char *file_in = "../PointCloudFilter_Vegetation.xyz";
-    std::string file_out = "../Trees.obj";
+    std::string file_out = "../trees.json";
 //    read_ply(file_in);
     read_xyz(file_in);
     ClusterTrees(_input_points);
