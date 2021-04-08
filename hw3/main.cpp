@@ -81,7 +81,7 @@ void exportCityJSON(const char *file_out) {
     outfile << "\"vertices\": [\n";
     std::string d="";
     for (auto const &v:vertices){
-        outfile<<"      "<<d<<"[ "<<v.x<<", "<<v.y<<", "<<v.z<<"]\n";
+        outfile<<std::setprecision(10)<<"      "<<d<<"[ "<<v.x<<", "<<v.y<<", "<<v.z<<"]\n";
         d=", ";
     }
     //close
@@ -530,8 +530,8 @@ int main(int argc, const char * argv[]) {
     //polytoply(json_path,pc_ply);
     //polytocsv(json_path,pc_obj);
     //json2json(json_path,json_out);
-    //importOBJ(file_in);
-    importGeoJSON(json_path, json_out);
-    //exportCityJSON(file_out);
+    importOBJ(file_in);
+    //importGeoJSON(json_path, json_out);
+    exportCityJSON(file_out);
     return 0;
 }
