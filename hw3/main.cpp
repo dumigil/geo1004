@@ -67,8 +67,8 @@ void exportCityJSON(const char *file_out) {
     outfile << "              \"boundaries\": [\n";
     std::string del="";
     for (auto const &t:triangles) {
-        outfile << del << "[[";
-        outfile << t[0] - 1 << ", " << t[1] - 1 << ", " << t[2] - 1 << "]]";
+        outfile << del << "             [[";
+        outfile << t[0] - 1 << ", " << t[1] - 1 << ", " << t[2] - 1 << "]]\n";
         del = ", ";
     }
     outfile<<"\n";
@@ -160,7 +160,9 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         auto geom = all["geometry"]["coordinates"];
         float height = all["properties"]["_elevation_max"];
         auto id = all["properties"]["identificatie"];
-        auto year = all["properties"]["bouwjaar"];
+        auto year2 = all["properties"]["bouwjaar"];
+        std::string year3 = year2;
+        std::string year = year3.substr(0,4);
         auto storeys = ceil(height/3);
         std::vector<std::vector<Point>> rings;
         for(auto &xy: geom){
@@ -174,21 +176,6 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             rings.push_back(base_ring);
         }
 
-
-
-        /*
-        for(auto &xy: geom){
-            std::vector<Point> base_ring;
-            for(const auto &p: xy){
-
-                if(height != 0){
-                    Point p_base = Point(p[0],p[1],p[2]);
-                    base_ring.push_back(p_base);
-                }
-            }
-            rings.push_back(base_ring);
-        }
-        */
         for(auto ring: rings){
             std::vector<int> base_ring;
             std::vector<int> roof_ring;
@@ -207,23 +194,6 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             roof_rings.push_back(roof_ring);
         }
 
-        /*
-        for(auto &xy: geom){
-            for(const auto &p: xy){
-                if(height != 0){
-                    Point p_base = Point(p[0],p[1],0);
-                    base.push_back(i);
-                    i+=2;
-                    vertices.push_back(p_base);
-
-                    Point p_roof = Point(p[0], p[1], height);
-                    roof.push_back(k);
-                    k+=2;
-                    vertices.push_back(p_roof);
-                }
-            }
-        }
-         */
         if(!base_rings.empty()){
             for(int a=0; a<base_rings.size();a++){
                 for(int x=0; x<base_rings[a].size();x++){
@@ -248,17 +218,6 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
         }
 
         if(base_rings[0].size()!=0) {
-            /*
-            for (int b = 1; b < base.size(); b++) {
-                std::vector<int> wall;
-                wall.push_back(base[b-1]);
-                wall.push_back(base[b]);
-                wall.push_back(roof[b]);
-                wall.push_back(roof[b-1]);
-                walls.push_back(wall);
-            }*/
-
-
             outfile << "      " << delim2 << id << ": {\n";
             outfile << "          \"type\": \"Building\",\n";
             outfile << "          \"attributes\": {\n";
@@ -273,11 +232,6 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
             std::string delim;
             std::string comma;
             outfile << delim << "[";
-            /*
-            for(auto all:base_rings){
-                std::reverse(all.begin(), all.end());
-            }
-             */
             std::string delim3=" ";
 
             for(auto base:base_rings) {
@@ -369,7 +323,7 @@ void importGeoJSON(const std::string json_in, const std::string json_out){
     std::string delim;
     delim="";
     for(auto &e: vertices){
-        outfile<<std::setprecision(6)<<"    "<<delim<<"[ "<<e.x<<", "<<e.y<<", "<<e.z<<"]\n";
+        outfile<<std::setprecision(10)<<"    "<<delim<<"[ "<<e.x<<", "<<e.y<<", "<<e.z<<"]\n";
         delim=",";
     }
     outfile<<"  ]\n";
@@ -559,18 +513,18 @@ void polytocsv(const std::string json_in, const std::string file_out){
     }
     std::ofstream outfile(file_out, std::ofstream::app);
     for (const auto &e : vertices){
-        outfile <<std::setprecision(10)<< e.x << ", " << e.y << ", " << e.z <<  "\n";
+        outfile <<std::setprecision(10)<< e.x << " " << e.y << " " << e.z <<  "\n";
     }
     outfile.close();
 }
 
 int main(int argc, const char * argv[]) {
-    const char *file_in = "../obj_total.obj";
+    const char *file_in = "../poging2.obj";
     const char *file_out = "../terrain.json";
     std::string json_out = "../buildings.json";
     std::string json_path = JSON_ELEV_PATH;
     std::string pc_ply = "../pc.ply";
-    std::string pc_obj = "../LAS00.csv";
+    std::string pc_obj = "../terrain_clipped_buffered.xyz";
     fs::path working_dir = fs::path(json_path).parent_path();
     fs::current_path(working_dir);
     //polytoply(json_path,pc_ply);

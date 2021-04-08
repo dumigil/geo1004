@@ -348,8 +348,8 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
         outfile << "      " << delim2 <<"\""<< uuid <<"\""<< ": {\n";
         outfile << "          \"type\": \"SolitaryVegetationObject\",\n";
         outfile << "          \"attributes\": {\n";
-        outfile << "              \"trunkDiameter\": " << diam << " ,\n";
-        outfile << "              \"crownDiameter\": " << trunk << " \n";
+        outfile << "              \"trunkDiameter\": " << trunk << " ,\n";
+        outfile << "              \"crownDiameter\": " << diam << " \n";
         outfile << "          },\n";
         outfile << "          \"geometry\": [{\n";
         outfile << "              \"type\": \"MultiSurface\",\n";
@@ -384,7 +384,7 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
     std::string delim4;
     delim4="";
     for(auto &e: _vertices){
-        outfile<<std::setprecision(6)<<"    "<<delim4<<"[ "<<e.x()<<", "<<e.y()<<", "<<e.z()<<"]\n";
+        outfile<<std::setprecision(10)<<"    "<<delim4<<"[ "<<e.x()<<", "<<e.y()<<", "<<e.z()<<"]\n";
         delim4=",";
     }
     outfile<<"  ]\n";
@@ -414,8 +414,8 @@ void convexHull(std::vector<std::vector<Point>> pointList, std::string out){
 
 
 int main(int argc, const char * argv[]) {
-    const char *file_in = "../PointCloudFilter_Vegetation.xyz";
-    std::string file_out = "../trees.json";
+    const char *file_in = "../LAS.xyz";
+    std::string file_out = "../trees_35th.json";
 //    read_ply(file_in);
     read_xyz(file_in);
     ClusterTrees(_input_points);
